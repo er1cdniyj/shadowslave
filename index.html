@@ -7,38 +7,40 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #0a0a14;
-            --secondary: #15152b;
-            --accent: #1e1e3f;
-            --highlight: #ff2a6d;
-            --highlight-glow: rgba(255, 42, 109, 0.4);
-            --secondary-accent: #05d9e8;
-            --text: #f1f2f6;
-            --text-secondary: #a5b0c0;
-            --danger: #ff4757;
-            --warning: #ff9e00;
-            --success: #00d2a8;
-            --card-bg: rgba(30, 30, 63, 0.6);
-            --glass-bg: rgba(21, 21, 43, 0.7);
-            --gradient: linear-gradient(135deg, #ff2a6d 0%, #05d9e8 100%);
-        }
+    --primary: #0a0a0f;
+    --secondary: #12121a;
+    --accent: #1a1a2a;
+    --highlight: #8b5cf6;
+    --highlight-glow: rgba(139, 92, 246, 0.3);
+    --secondary-accent: #06b6d4;
+    --text: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --success: #10b981;
+    --card-bg: rgba(26, 26, 42, 0.7);
+    --glass-bg: rgba(18, 18, 26, 0.8);
+    --gradient: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 50%, #0ea5e9 100%);
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', 'Segoe UI', sans-serif;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+}
 
-        body {
-            background-color: var(--primary);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(255, 42, 109, 0.1) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(5, 217, 232, 0.1) 0%, transparent 20%);
-        }
+body {
+    background-color: var(--primary);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 20%),
+        linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
 
         .container {
             max-width: 1300px;
