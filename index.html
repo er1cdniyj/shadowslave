@@ -1007,103 +1007,407 @@
 
     <script>
         const characters = [
-            {
-                id: 1,
-                name: "Sunny",
-                alias: "Sunless",
-                aspect: "Shadow",
-                rank: "Awakened",
-                description: "The protagonist of Shadow Slave. Originally a street rat from the outskirts, he was chosen by the Spell and thrown into the nightmare.",
-                abilities: ["Shadow Control", "Stealth", "Weaving"],
-                firstAppearance: 1,
-                image: "👤",
-                stats: {
-                    cunning: 9,
-                    combat: 7,
-                    survival: 8
-                }
-            },
-            {
-                id: 2,
-                name: "Nephis",
-                alias: "Changing Star",
-                aspect: "Light",
-                rank: "Awakened",
-                description: "A mysterious and powerful Awakened from a prestigious clan. She becomes Sunny's master.",
-                abilities: ["Light Manipulation", "Swordsmanship", "Leadership"],
-                firstAppearance: 45,
-                image: "👑",
-                stats: {
-                    cunning: 8,
-                    combat: 9,
-                    survival: 7
-                }
-            },
-            {
-                id: 3,
-                name: "Cassie",
-                alias: "",
-                aspect: "Seer",
-                rank: "Awakened",
-                description: "A blind girl who can see the future. She forms a close bond with Sunny during their trials.",
-                abilities: ["Future Sight", "Divination", "Insight"],
-                firstAppearance: 23,
-                image: "🔮",
-                stats: {
-                    cunning: 7,
-                    combat: 5,
-                    survival: 6
-                }
-            },
-            {
-                id: 4,
-                name: "Mordret",
-                alias: "",
-                aspect: "Mirror",
-                rank: "Master",
-                description: "A powerful and enigmatic Master who can manipulate reflections and create mirror copies.",
-                abilities: ["Mirror Duplication", "Reflection Walking", "Illusions"],
-                firstAppearance: 320,
-                image: "🪞",
-                stats: {
-                    cunning: 10,
-                    combat: 8,
-                    survival: 9
-                }
-            },
-            {
-                id: 5,
-                name: "Kai",
-                alias: "Harper",
-                aspect: "Song",
-                rank: "Awakened",
-                description: "A charismatic Awakened with the power to influence emotions through music.",
-                abilities: ["Emotional Manipulation", "Charisma", "Music Magic"],
-                firstAppearance: 150,
-                image: "🎵",
-                stats: {
-                    cunning: 6,
-                    combat: 6,
-                    survival: 7
-                }
-            },
-            {
-                id: 6,
-                name: "Effie",
-                alias: "",
-                aspect: "War",
-                rank: "Awakened",
-                description: "A fierce warrior with enhanced strength and combat abilities.",
-                abilities: ["Super Strength", "Combat Mastery", "Endurance"],
-                firstAppearance: 110,
-                image: "⚔️",
-                stats: {
-                    cunning: 5,
-                    combat: 9,
-                    survival: 8
-                }
-            }
-        ];
+    {
+        id: 1,
+        name: "Sunny",
+        alias: "Sunless",
+        aspect: "Shadow",
+        rank: "Awakened",
+        description: "The protagonist of Shadow Slave. Originally a street rat from the outskirts, he was chosen by the Spell and thrown into the nightmare.",
+        abilities: ["Shadow Control", "Stealth", "Weaving"],
+        firstAppearance: 1,
+        image: "👤",
+        stats: {
+            cunning: 9,
+            combat: 7,
+            survival: 8
+        }
+    },
+    {
+        id: 2,
+        name: "Nephis",
+        alias: "Changing Star",
+        aspect: "Light",
+        rank: "Awakened",
+        description: "A mysterious and powerful Awakened from a prestigious clan. She becomes Sunny's master.",
+        abilities: ["Light Manipulation", "Swordsmanship", "Leadership"],
+        firstAppearance: 45,
+        image: "👑",
+        stats: {
+            cunning: 8,
+            combat: 9,
+            survival: 7
+        }
+    },
+    {
+        id: 3,
+        name: "Cassie",
+        alias: "",
+        aspect: "Seer",
+        rank: "Awakened",
+        description: "A blind girl who can see the future. She forms a close bond with Sunny during their trials.",
+        abilities: ["Future Sight", "Divination", "Insight"],
+        firstAppearance: 23,
+        image: "🔮",
+        stats: {
+            cunning: 7,
+            combat: 5,
+            survival: 6
+        }
+    },
+    {
+        id: 4,
+        name: "Mordret",
+        alias: "",
+        aspect: "Mirror",
+        rank: "Master",
+        description: "A powerful and enigmatic Master who can manipulate reflections and create mirror copies.",
+        abilities: ["Mirror Duplication", "Reflection Walking", "Illusions"],
+        firstAppearance: 320,
+        image: "🪞",
+        stats: {
+            cunning: 10,
+            combat: 8,
+            survival: 9
+        }
+    },
+    {
+        id: 5,
+        name: "Kai",
+        alias: "Harper",
+        aspect: "Song",
+        rank: "Awakened",
+        description: "A charismatic Awakened with the power to influence emotions through music.",
+        abilities: ["Emotional Manipulation", "Charisma", "Music Magic"],
+        firstAppearance: 150,
+        image: "🎵",
+        stats: {
+            cunning: 6,
+            combat: 6,
+            survival: 7
+        }
+    },
+    {
+        id: 6,
+        name: "Effie",
+        alias: "",
+        aspect: "War",
+        rank: "Awakened",
+        description: "A fierce warrior with enhanced strength and combat abilities.",
+        abilities: ["Super Strength", "Combat Mastery", "Endurance"],
+        firstAppearance: 110,
+        image: "⚔️",
+        stats: {
+            cunning: 5,
+            combat: 9,
+            survival: 8
+        }
+    },
+    {
+        id: 7,
+        name: "Caster",
+        alias: "",
+        aspect: "Stone",
+        rank: "Awakened",
+        description: "A defensive specialist who can manipulate earth and stone to create barriers and fortifications.",
+        abilities: ["Earth Manipulation", "Barrier Creation", "Defensive Stance"],
+        firstAppearance: 95,
+        image: "🛡️",
+        stats: {
+            cunning: 6,
+            combat: 7,
+            survival: 8
+        }
+    },
+    {
+        id: 8,
+        name: "Jet",
+        alias: "",
+        aspect: "Wind",
+        rank: "Awakened",
+        description: "A swift and agile fighter who can manipulate air currents to enhance her speed and create cutting blades of wind.",
+        abilities: ["Wind Control", "Enhanced Speed", "Air Blades"],
+        firstAppearance: 180,
+        image: "💨",
+        stats: {
+            cunning: 7,
+            combat: 8,
+            survival: 7
+        }
+    },
+    {
+        id: 9,
+        name: "Seishan",
+        alias: "",
+        aspect: "Dream",
+        rank: "Master",
+        description: "A mysterious Master who can enter and manipulate dreams, creating powerful illusions that can affect reality.",
+        abilities: ["Dream Walking", "Illusion Crafting", "Mental Manipulation"],
+        firstAppearance: 420,
+        image: "💤",
+        stats: {
+            cunning: 9,
+            combat: 6,
+            survival: 7
+        }
+    },
+    {
+        id: 10,
+        name: "Morgan",
+        alias: "Kingslayer",
+        aspect: "Death",
+        rank: "Master",
+        description: "A feared Master with the power to manipulate death energy, capable of draining life force from his enemies.",
+        abilities: ["Life Drain", "Necrotic Energy", "Soul Manipulation"],
+        firstAppearance: 380,
+        image: "💀",
+        stats: {
+            cunning: 8,
+            combat: 9,
+            survival: 8
+        }
+    },
+    {
+        id: 11,
+        name: "Luster",
+        alias: "",
+        aspect: "Radiance",
+        rank: "Awakened",
+        description: "A member of Nephis's clan who can create and manipulate light, using it both for illumination and as a weapon.",
+        abilities: ["Light Constructs", "Blinding Flash", "Healing Light"],
+        firstAppearance: 200,
+        image: "💡",
+        stats: {
+            cunning: 6,
+            combat: 7,
+            survival: 6
+        }
+    },
+    {
+        id: 12,
+        name: "Gunlaug",
+        alias: "The Tyrant",
+        aspect: "Dominion",
+        rank: "Master",
+        description: "The tyrannical ruler of the Bright Castle who uses his power to control and dominate others.",
+        abilities: ["Mind Control", "Authority Aura", "Command Presence"],
+        firstAppearance: 300,
+        image: "👑",
+        stats: {
+            cunning: 8,
+            combat: 8,
+            survival: 7
+        }
+    },
+    {
+        id: 13,
+        name: "Aster",
+        alias: "",
+        aspect: "Star",
+        rank: "Master",
+        description: "A powerful Master who can manipulate stellar energy, calling upon the power of stars for devastating attacks.",
+        abilities: ["Stellar Energy", "Gravity Control", "Celestial Projection"],
+        firstAppearance: 550,
+        image: "⭐",
+        stats: {
+            cunning: 7,
+            combat: 9,
+            survival: 7
+        }
+    },
+    {
+        id: 14,
+        name: "Noctis",
+        alias: "",
+        aspect: "Night",
+        rank: "Master",
+        description: "A Master who commands the power of darkness and night, able to shroud areas in impenetrable darkness.",
+        abilities: ["Darkness Manipulation", "Shadow Travel", "Night Vision"],
+        firstAppearance: 480,
+        image: "🌙",
+        stats: {
+            cunning: 8,
+            combat: 7,
+            survival: 8
+        }
+    },
+    {
+        id: 15,
+        name: "Lily",
+        alias: "",
+        aspect: "Nature",
+        rank: "Awakened",
+        description: "An Awakened with the ability to communicate with and control plants, using them for both offense and defense.",
+        abilities: ["Plant Control", "Healing Herbs", "Nature Communication"],
+        firstAppearance: 220,
+        image: "🌿",
+        stats: {
+            cunning: 6,
+            combat: 6,
+            survival: 9
+        }
+    },
+    {
+        id: 16,
+        name: "Quentin",
+        alias: "",
+        aspect: "Memory",
+        rank: "Awakened",
+        description: "A scholar-type Awakened who can access and manipulate memories, both his own and those of others.",
+        abilities: ["Memory Reading", "Memory Alteration", "Knowledge Absorption"],
+        firstAppearance: 260,
+        image: "🧠",
+        stats: {
+            cunning: 9,
+            combat: 4,
+            survival: 5
+        }
+    },
+    {
+        id: 17,
+        name: "Beth",
+        alias: "",
+        aspect: "Water",
+        rank: "Awakened",
+        description: "A fluid fighter who can manipulate water in all its forms, from gentle streams to crushing tidal waves.",
+        abilities: ["Water Control", "Ice Manipulation", "Healing Waters"],
+        firstAppearance: 190,
+        image: "💧",
+        stats: {
+            cunning: 7,
+            combat: 7,
+            survival: 7
+        }
+    },
+    {
+        id: 18,
+        name: "Raven",
+        alias: "",
+        aspect: "Omen",
+        rank: "Master",
+        description: "A mysterious Master associated with prophecies and fate, able to see possible futures and manipulate probability.",
+        abilities: ["Probability Manipulation", "Future Sight", "Fate Weaving"],
+        firstAppearance: 520,
+        image: "🐦‍⬛",
+        stats: {
+            cunning: 10,
+            combat: 5,
+            survival: 6
+        }
+    },
+    {
+        id: 19,
+        name: "Jax",
+        alias: "",
+        aspect: "Chaos",
+        rank: "Master",
+        description: "An unpredictable Master who thrives on disorder, able to create chaotic energy fields that disrupt abilities and cause confusion.",
+        abilities: ["Chaos Generation", "Ability Disruption", "Reality Warping"],
+        firstAppearance: 580,
+        image: "🌀",
+        stats: {
+            cunning: 8,
+            combat: 8,
+            survival: 7
+        }
+    },
+    {
+        id: 20,
+        name: "Sylph",
+        alias: "",
+        aspect: "Sky",
+        rank: "Awakened",
+        description: "A graceful Awakened who can manipulate air currents to fly and create powerful wind-based attacks.",
+        abilities: ["Flight", "Wind Blades", "Atmospheric Control"],
+        firstAppearance: 240,
+        image: "🌪️",
+        stats: {
+            cunning: 6,
+            combat: 7,
+            survival: 7
+        }
+    },
+    {
+        id: 21,
+        name: "Orion",
+        alias: "",
+        aspect: "Hunter",
+        rank: "Master",
+        description: "A relentless tracker and hunter who can sense his prey from great distances and never loses their trail.",
+        abilities: ["Enhanced Tracking", "Prey Sense", "Hunter's Mark"],
+        firstAppearance: 450,
+        image: "🏹",
+        stats: {
+            cunning: 8,
+            combat: 8,
+            survival: 9
+        }
+    },
+    {
+        id: 22,
+        name: "Iris",
+        alias: "",
+        aspect: "Flame",
+        rank: "Awakened",
+        description: "A passionate Awakened who commands the power of fire, able to create and control flames of various intensities.",
+        abilities: ["Fire Manipulation", "Heat Resistance", "Pyrokinesis"],
+        firstAppearance: 170,
+        image: "🔥",
+        stats: {
+            cunning: 6,
+            combat: 8,
+            survival: 6
+        }
+    },
+    {
+        id: 23,
+        name: "Valerius",
+        alias: "",
+        aspect: "Order",
+        rank: "Master",
+        description: "A disciplined Master who imposes order on chaos, able to create structured energy fields and nullify chaotic effects.",
+        abilities: ["Order Manifestation", "Chaos Nullification", "Structural Reinforcement"],
+        firstAppearance: 510,
+        image: "⚖️",
+        stats: {
+            cunning: 8,
+            combat: 7,
+            survival: 7
+        }
+    },
+    {
+        id: 24,
+        name: "Zephyr",
+        alias: "",
+        aspect: "Storm",
+        rank: "Master",
+        description: "A tempestuous Master who commands the power of storms, able to summon lightning, thunder, and torrential rains.",
+        abilities: ["Lightning Control", "Storm Summoning", "Weather Manipulation"],
+        firstAppearance: 490,
+        image: "⛈️",
+        stats: {
+            cunning: 7,
+            combat: 9,
+            survival: 7
+        }
+    },
+    {
+        id: 25,
+        name: "Corvus",
+        alias: "",
+        aspect: "Knowledge",
+        rank: "Master",
+        description: "A scholarly Master who collects and hoards information, able to access vast stores of knowledge and uncover secrets.",
+        abilities: ["Information Access", "Secret Revelation", "Mental Library"],
+        firstAppearance: 530,
+        image: "📚",
+        stats: {
+            cunning: 10,
+            combat: 5,
+            survival: 6
+        }
+    }
+];
 
         const timelineEvents = [
             {
