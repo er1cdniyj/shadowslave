@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Slave Compendium</title>
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --text: #f1f1f1;
+            --text-secondary: #b8b8b8;
+            --danger: #ff4757;
+            --warning: #ffa502;
+            --success: #2ed573;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--secondary);
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--highlight), var(--warning));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--highlight);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--highlight);
+            background-color: rgba(233, 69, 96, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(22, 33, 62, 0.8), rgba(22, 33, 62, 0.9)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231a1a2e"/><path d="M0 0L100 100M100 0L0 100" stroke="%230f3460" stroke-width="1"/></svg>');
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--text), var(--highlight));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--text-secondary);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--highlight);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background-color: #ff2e4f;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(233, 69, 96, 0.3);
+        }
+
+        /* Spoiler Settings */
+        .spoiler-settings {
+            background-color: var(--accent);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .spoiler-settings label {
+            font-weight: 500;
+        }
+
+        .chapter-input {
+            background-color: var(--secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            padding: 8px 12px;
+            border-radius: 4px;
+            width: 100px;
+        }
+
+        /* Content Sections */
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        .content-section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background-color: var(--secondary);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Character Grid */
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .character-card {
+            background-color: var(--accent);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .character-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .character-image {
+            height: 200px;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--highlight);
+        }
+
+        .character-info {
+            padding: 1.5rem;
+        }
+
+        .character-name {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--highlight);
+        }
+
+        .character-aspect {
+            display: inline-block;
+            background-color: var(--highlight);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .character-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .character-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--highlight);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--accent);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--highlight);
+            border: 4px solid var(--accent);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(odd)::after {
+            right: -10px;
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background-color: var(--accent);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--highlight);
+        }
+
+        .timeline-chapter {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Echo Gallery */
+        .echo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .echo-card {
+            background-color: var(--accent);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .echo-card:hover {
+            transform: scale(1.05);
+        }
+
+        .echo-image {
+            height: 150px;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--warning);
+        }
+
+        .echo-info {
+            padding: 1rem;
+        }
+
+        .echo-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--warning);
+        }
+
+        .echo-rank {
+            display: inline-block;
+            background-color: var(--warning);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Theory Hub */
+        .theory-form {
+            background-color: var(--accent);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            color: var(--text);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .theory-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .theory-card {
+            background-color: var(--accent);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .theory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .theory-title {
+            font-size: 1.3rem;
+            color: var(--highlight);
+        }
+
+        .theory-meta {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .theory-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .theory-tag {
+            background-color: var(--primary);
+            color: var(--text-secondary);
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .theory-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .upvote-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s;
+        }
+
+        .upvote-btn:hover, .upvote-btn.active {
+            color: var(--highlight);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--secondary);
+            padding: 3rem 0;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--highlight);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--highlight);
+        }
+
+        .copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+
+        /* Spoiler Blur */
+        .spoiler-blur {
+            filter: blur(8px);
+            user-select: none;
+            position: relative;
+        }
+
+        .spoiler-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(22, 33, 62, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+
+        .spoiler-text {
+            background: var(--accent);
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: var(--highlight);
+            font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+
+            .timeline-item::after {
+                left: 20px;
+            }
+
+            .character-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">⚔️</div>
+                <h1>Shadow Slave Compendium</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#characters">Characters</a></li>
+                    <li><a href="#timeline">Timeline</a></li>
+                    <li><a href="#echoes">Echoes</a></li>
+                    <li><a href="#theories">Theories</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Welcome to the Shadow Slave Universe</h2>
+            <p>Explore the intricate world of Guerric's Shadow Slave. Discover character profiles, track the story timeline, examine echoes, and join the theory-crafting community.</p>
+            <button class="cta-button" id="exploreBtn">Explore the Compendium</button>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Spoiler Settings -->
+        <div class="spoiler-settings">
+            <label for="currentChapter">Set your current chapter to avoid spoilers:</label>
+            <input type="number" id="currentChapter" class="chapter-input" min="1" max="1500" value="1">
+            <button class="cta-button" id="saveChapter">Save</button>
+            <span id="spoilerStatus" style="margin-left: auto;">Spoiler protection: ON</span>
+        </div>
+
+        <!-- Characters Section -->
+        <section id="characters" class="content-section">
+            <h2 class="section-title">Characters</h2>
+            <div class="character-grid" id="characterGrid">
+                <!-- Characters will be loaded here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section id="timeline" class="content-section">
+            <h2 class="section-title">Story Timeline</h2>
+            <div class="timeline" id="timelineContainer">
+                <!-- Timeline items will be loaded here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Echoes Section -->
+        <section id="echoes" class="content-section">
+            <h2 class="section-title">Echo Codex</h2>
+            <div class="echo-gallery" id="echoGallery">
+                <!-- Echo cards will be loaded here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Theory Hub -->
+        <section id="theories" class="content-section">
+            <h2 class="section-title">Theory Hub</h2>
+            
+            <div class="theory-form">
+                <h3>Share Your Theory</h3>
+                <div class="form-group">
+                    <label for="theoryTitle">Title</label>
+                    <input type="text" id="theoryTitle" class="form-control" placeholder="Enter your theory title">
+                </div>
+                <div class="form-group">
+                    <label for="theoryContent">Theory</label>
+                    <textarea id="theoryContent" class="form-control" placeholder="Explain your theory in detail..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="theoryTags">Tags (comma separated)</label>
+                    <input type="text" id="theoryTags" class="form-control" placeholder="e.g., True Name, Weaver, Nephis">
+                </div>
+                <button class="cta-button" id="submitTheory">Submit Theory</button>
+            </div>
+
+            <div class="theory-list" id="theoryList">
+                <!-- Theories will be loaded here by JavaScript -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">Shadow Slave Compendium</div>
+            <p>A fan-made companion website for Guerric's Shadow Slave</p>
+            <div class="footer-links">
+                <a href="#">Home</a>
+                <a href="#characters">Characters</a>
+                <a href="#timeline">Timeline</a>
+                <a href="#echoes">Echoes</a>
+                <a href="#theories">Theories</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="copyright">
+                &copy; 2023 Shadow Slave Compendium. All rights to the Shadow Slave story belong to Guerric.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample data for the website
+        const characters = [
+            {
+                id: 1,
+                name: "Sunny",
+                alias: "Sunless",
+                aspect: "Shadow",
+                rank: "Awakened",
+                description: "The protagonist of Shadow Slave. Originally a street rat from the outskirts, he was chosen by the Spell and thrown into the nightmare.",
+                abilities: ["Shadow Control", "Stealth", "Weaving"],
+                firstAppearance: 1,
+                image: "👤",
+                stats: {
+                    cunning: 9,
+                    combat: 7,
+                    survival: 8
+                }
+            },
+            {
+                id: 2,
+                name: "Nephis",
+                alias: "Changing Star",
+                aspect: "Light",
+                rank: "Awakened",
+                description: "A mysterious and powerful Awakened from a prestigious clan. She becomes Sunny's master.",
+                abilities: ["Light Manipulation", "Swordsmanship", "Leadership"],
+                firstAppearance: 45,
+                image: "👑",
+                stats: {
+                    cunning: 8,
+                    combat: 9,
+                    survival: 7
+                }
+            },
+            {
+                id: 3,
+                name: "Cassie",
+                alias: "",
+                aspect: "Seer",
+                rank: "Awakened",
+                description: "A blind girl who can see the future. She forms a close bond with Sunny during their trials.",
+                abilities: ["Future Sight", "Divination", "Insight"],
+                firstAppearance: 23,
+                image: "🔮",
+                stats: {
+                    cunning: 7,
+                    combat: 5,
+                    survival: 6
+                }
+            },
+            {
+                id: 4,
+                name: "Mordret",
+                alias: "",
+                aspect: "Mirror",
+                rank: "Master",
+                description: "A powerful and enigmatic Master who can manipulate reflections and create mirror copies.",
+                abilities: ["Mirror Duplication", "Reflection Walking", "Illusions"],
+                firstAppearance: 320,
+                image: "🪞",
+                stats: {
+                    cunning: 10,
+                    combat: 8,
+                    survival: 9
+                }
+            }
+        ];
+
+        const timelineEvents = [
+            {
+                id: 1,
+                title: "The First Nightmare",
+                description: "Sunny is chosen by the Spell and enters his first nightmare, where he discovers his Aspect.",
+                chapter: 1,
+                significance: "major"
+            },
+            {
+                id: 2,
+                title: "Meeting Nephis",
+                description: "Sunny encounters Nephis for the first time and becomes her slave.",
+                chapter: 45,
+                significance: "major"
+            },
+            {
+                id: 3,
+                title: "The Forgotten Shore",
+                description: "The group arrives at the Forgotten Shore, a dangerous abandoned city filled with Nightmare Creatures.",
+                chapter: 120,
+                significance: "major"
+            },
+            {
+                id: 4,
+                title: "Defeating Gunlaug",
+                description: "Sunny and Nephis defeat the tyrant Gunlaug and free the slaves of the Bright Castle.",
+                chapter: 350,
+                significance: "major"
+            },
+            {
+                id: 5,
+                title: "The Second Nightmare",
+                description: "Sunny enters his second nightmare and faces new challenges that test his abilities and resolve.",
+                chapter: 480,
+                significance: "major"
+            }
+        ];
+
+        const echoes = [
+            {
+                id: 1,
+                name: "Shadow Serpent",
+                rank: "Monster",
+                type: "Combat",
+                description: "A serpentine creature made of living shadow that can constrict enemies and move through shadows.",
+                abilities: ["Shadow Blend", "Constriction", "Shadow Travel"],
+                acquired: 85,
+                image: "🐍"
+            },
+            {
+                id: 2,
+                name: "Memory of the Forgotten King",
+                rank: "Tyrant",
+                type: "Utility",
+                description: "An echo containing the memories of a long-forgotten king, granting knowledge of ancient history and lost techniques.",
+                abilities: ["Historical Knowledge", "Tactical Insight", "Royal Authority"],
+                acquired: 210,
+                image: "👑"
+            },
+            {
+                id: 3,
+                name: "Starlight Sprite",
+                rank: "Beast",
+                type: "Support",
+                description: "A small creature of pure light that can heal minor wounds and provide illumination in dark places.",
+                abilities: ["Minor Healing", "Light Generation", "Scouting"],
+                acquired: 150,
+                image: "✨"
+            },
+            {
+                id: 4,
+                name: "Stone Golem",
+                rank: "Monster",
+                type: "Defense",
+                description: "A hulking creature made of animated stone that can absorb tremendous amounts of damage.",
+                abilities: ["Stone Skin", "Earth Manipulation", "Heavy Impact"],
+                acquired: 290,
+                image: "🗿"
+            }
+        ];
+
+        const theories = [
+            {
+                id: 1,
+                title: "The True Nature of the Spell",
+                content: "I believe the Spell is not a random phenomenon but a carefully designed system created by an ancient civilization to prepare humanity for a coming threat.",
+                author: "LoreSeeker",
+                tags: ["Spell", "Ancient Civilization", "World Building"],
+                upvotes: 42,
+                date: "2023-10-15"
+            },
+            {
+                id: 2,
+                title: "Sunny's True Name Theory",
+                content: "Based on the patterns we've seen with other characters' True Names, I think Sunny's True Name will be related to his connection with shadows and his ability to weave fate.",
+                author: "NameAnalyst",
+                tags: ["Sunny", "True Name", "Weaver"],
+                upvotes: 38,
+                date: "2023-11-02"
+            },
+            {
+                id: 3,
+                title: "Nephis' Endgame",
+                content: "I suspect Nephis has a much larger plan than we've been shown, and her relationship with Sunny is a key part of that plan.",
+                author: "PlotDetective",
+                tags: ["Nephis", "Character Motivation", "Endgame"],
+                upvotes: 29,
+                date: "2023-11-20"
+            }
+        ];
+
+        // DOM Elements
+        const characterGrid = document.getElementById('characterGrid');
+        const timelineContainer = document.getElementById('timelineContainer');
+        const echoGallery = document.getElementById('echoGallery');
+        const theoryList = document.getElementById('theoryList');
+        const currentChapterInput = document.getElementById('currentChapter');
+        const saveChapterBtn = document.getElementById('saveChapter');
+        const spoilerStatus = document.getElementById('spoilerStatus');
+        const submitTheoryBtn = document.getElementById('submitTheory');
+        const exploreBtn = document.getElementById('exploreBtn');
+
+        // Current chapter for spoiler protection
+        let currentChapter = 1;
+
+        // Initialize the website
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved chapter from localStorage
+            const savedChapter = localStorage.getItem('shadowSlaveCurrentChapter');
+            if (savedChapter) {
+                currentChapter = parseInt(savedChapter);
+                currentChapterInput.value = currentChapter;
+                updateSpoilerStatus();
+            }
+            
+            renderCharacters();
+            renderTimeline();
+            renderEchoes();
+            renderTheories();
+            setupEventListeners();
+        });
+
+        // Set up event listeners
+        function setupEventListeners() {
+            saveChapterBtn.addEventListener('click', saveCurrentChapter);
+            submitTheoryBtn.addEventListener('click', submitTheory);
+            exploreBtn.addEventListener('click', function() {
+                document.getElementById('characters').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId !== '#') {
+                        document.querySelector(targetId).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Save current chapter for spoiler protection
+        function saveCurrentChapter() {
+            currentChapter = parseInt(currentChapterInput.value) || 1;
+            localStorage.setItem('shadowSlaveCurrentChapter', currentChapter);
+            updateSpoilerStatus();
+            
+            // Re-render content with new spoiler settings
+            renderCharacters();
+            renderTimeline();
+            renderEchoes();
+        }
+
+        // Update spoiler status display
+        function updateSpoilerStatus() {
+            spoilerStatus.textContent = `Spoiler protection: ON (Chapter ${currentChapter})`;
+        }
+
+        // Check if content should be hidden due to spoilers
+        function isSpoiler(revealedInChapter) {
+            return revealedInChapter > currentChapter;
+        }
+
+        // Create spoiler overlay
+        function createSpoilerOverlay(revealedInChapter) {
+            const overlay = document.createElement('div');
+            overlay.className = 'spoiler-overlay';
+            overlay.innerHTML = `<div class="spoiler-text">Revealed in Chapter ${revealedInChapter}</div>`;
+            
+            overlay.addEventListener('click', function() {
+                // Optionally allow users to reveal spoilers by clicking
+                this.parentElement.classList.remove('spoiler-blur');
+                this.remove();
+            });
+            
+            return overlay;
+        }
+
+        // Render characters
+        function renderCharacters() {
+            characterGrid.innerHTML = '';
+            
+            characters.forEach(character => {
+                const card = document.createElement('div');
+                card.className = 'character-card';
+                
+                // Add spoiler blur if needed
+                if (isSpoiler(character.firstAppearance)) {
+                    card.classList.add('spoiler-blur');
+                }
+                
+                card.innerHTML = `
+                    <div class="character-image">${character.image}</div>
+                    <div class="character-info">
+                        <h3 class="character-name">${character.name}</h3>
+                        <div class="character-aspect">${character.aspect} • ${character.rank}</div>
+                        <p class="character-description">${character.description}</p>
+                        <div class="character-stats">
+                            <div class="stat">
+                                <div class="stat-value">${character.stats.cunning}</div>
+                                <div class="stat-label">Cunning</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${character.stats.combat}</div>
+                                <div class="stat-label">Combat</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${character.stats.survival}</div>
+                                <div class="stat-label">Survival</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Add spoiler overlay if needed
+                if (isSpoiler(character.firstAppearance)) {
+                    card.appendChild(createSpoilerOverlay(character.firstAppearance));
+                }
+                
+                characterGrid.appendChild(card);
+            });
+        }
+
+        // Render timeline
+        function renderTimeline() {
+            timelineContainer.innerHTML = '';
+            
+            timelineEvents.forEach((event, index) => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item';
+                
+                // Add spoiler blur if needed
+                if (isSpoiler(event.chapter)) {
+                    item.classList.add('spoiler-blur');
+                }
+                
+                item.innerHTML = `
+                    <div class="timeline-content">
+                        <h4 class="timeline-title">${event.title}</h4>
+                        <div class="timeline-chapter">Chapter ${event.chapter}</div>
+                        <p>${event.description}</p>
+                    </div>
+                `;
+                
+                // Add spoiler overlay if needed
+                if (isSpoiler(event.chapter)) {
+                    item.appendChild(createSpoilerOverlay(event.chapter));
+                }
+                
+                timelineContainer.appendChild(item);
+            });
+        }
+
+        // Render echoes
+        function renderEchoes() {
+            echoGallery.innerHTML = '';
+            
+            echoes.forEach(echo => {
+                const card = document.createElement('div');
+                card.className = 'echo-card';
+                
+                // Add spoiler blur if needed
+                if (isSpoiler(echo.acquired)) {
+                    card.classList.add('spoiler-blur');
+                }
+                
+                card.innerHTML = `
+                    <div class="echo-image">${echo.image}</div>
+                    <div class="echo-info">
+                        <h3 class="echo-name">${echo.name}</h3>
+                        <div class="echo-rank">${echo.rank}</div>
+                        <p>${echo.description}</p>
+                    </div>
+                `;
+                
+                // Add spoiler overlay if needed
+                if (isSpoiler(echo.acquired)) {
+                    card.appendChild(createSpoilerOverlay(echo.acquired));
+                }
+                
+                echoGallery.appendChild(card);
+            });
+        }
+
+        // Render theories
+        function renderTheories() {
+            theoryList.innerHTML = '';
+            
+            theories.forEach(theory => {
+                const card = document.createElement('div');
+                card.className = 'theory-card';
+                
+                card.innerHTML = `
+                    <div class="theory-header">
+                        <div>
+                            <h3 class="theory-title">${theory.title}</h3>
+                            <div class="theory-meta">By ${theory.author} • ${theory.date}</div>
+                        </div>
+                        <div class="theory-upvotes">
+                            <button class="upvote-btn" data-theory="${theory.id}">
+                                <span>▲</span> ${theory.upvotes}
+                            </button>
+                        </div>
+                    </div>
+                    <p>${theory.content}</p>
+                    <div class="theory-tags">
+                        ${theory.tags.map(tag => `<span class="theory-tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="theory-actions">
+                        <button class="upvote-btn" data-theory="${theory.id}">
+                            <span>▲</span> Upvote
+                        </button>
+                        <button class="upvote-btn">
+                            <span>💬</span> Comment
+                        </button>
+                    </div>
+                `;
+                
+                theoryList.appendChild(card);
+            });
+            
+            // Add event listeners to upvote buttons
+            document.querySelectorAll('.upvote-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const theoryId = this.getAttribute('data-theory');
+                    if (theoryId) {
+                        upvoteTheory(theoryId);
+                    }
+                });
+            });
+        }
+
+        // Submit new theory
+        function submitTheory() {
+            const title = document.getElementById('theoryTitle').value;
+            const content = document.getElementById('theoryContent').value;
+            const tags = document.getElementById('theoryTags').value;
+            
+            if (!title || !content) {
+                alert('Please fill in both title and content for your theory.');
+                return;
+            }
+            
+            const newTheory = {
+                id: theories.length + 1,
+                title: title,
+                content: content,
+                author: "You",
+                tags: tags.split(',').map(tag => tag.trim()),
+                upvotes: 0,
+                date: new Date().toISOString().split('T')[0]
+            };
+            
+            theories.unshift(newTheory);
+            renderTheories();
+            
+            // Clear form
+            document.getElementById('theoryTitle').value = '';
+            document.getElementById('theoryContent').value = '';
+            document.getElementById('theoryTags').value = '';
+            
+            alert('Theory submitted successfully!');
+        }
+
+        // Upvote a theory
+        function upvoteTheory(theoryId) {
+            const theory = theories.find(t => t.id == theoryId);
+            if (theory) {
+                theory.upvotes++;
+                renderTheories();
+            }
+        }
+    </script>
+</body>
+</html>
