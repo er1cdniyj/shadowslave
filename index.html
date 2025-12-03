@@ -420,15 +420,12 @@
             border: 1px solid var(--border-color);
             line-height: 1.8;
             font-size: 1.1rem;
+            min-height: 400px;
         }
         
         .chapter-text {
             white-space: pre-wrap;
             font-family: 'Lato', sans-serif;
-        }
-        
-        .chapter-text p {
-            margin-bottom: 20px;
         }
         
         /* Add Fanfic Form */
@@ -1033,45 +1030,68 @@
             // Load users from localStorage
             const storedUsers = localStorage.getItem('shadowSlaveUsers');
             if (storedUsers) {
-                state.users = JSON.parse(storedUsers);
+                try {
+                    state.users = JSON.parse(storedUsers);
+                } catch (e) {
+                    console.error('Error parsing users:', e);
+                    state.users = [];
+                }
             }
             
             // Load fanfics from localStorage
             const storedFanfics = localStorage.getItem('shadowSlaveFanfics');
             if (storedFanfics) {
-                state.fanfics = JSON.parse(storedFanfics);
+                try {
+                    state.fanfics = JSON.parse(storedFanfics);
+                    // Ensure chapters exist for each fanfic
+                    state.fanfics.forEach(fanfic => {
+                        if (!fanfic.chapters || !Array.isArray(fanfic.chapters)) {
+                            fanfic.chapters = [];
+                        }
+                    });
+                } catch (e) {
+                    console.error('Error parsing fanfics:', e);
+                    state.fanfics = [];
+                }
             }
             
             // Load next ID from localStorage
             const storedNextId = localStorage.getItem('shadowSlaveNextId');
             if (storedNextId) {
-                state.nextFanficId = parseInt(storedNextId);
+                state.nextFanficId = parseInt(storedNextId) || 1;
             }
             
             // Check if user is logged in from localStorage
             const currentUser = localStorage.getItem('shadowSlaveCurrentUser');
             if (currentUser) {
-                state.currentUser = JSON.parse(currentUser);
-                updateUserUI();
+                try {
+                    state.currentUser = JSON.parse(currentUser);
+                    updateUserUI();
+                } catch (e) {
+                    console.error('Error parsing current user:', e);
+                }
             }
             
             // Render fanfics on home page
             renderFanfics('home');
             
-            // Debug: Log current state
-            console.log('Loaded fanfics:', state.fanfics);
-            console.log('Loaded users:', state.users);
+            console.log('Initialized with', state.fanfics.length, 'fanfics');
         }
 
         // Save to localStorage
         function saveToStorage() {
-            localStorage.setItem('shadowSlaveUsers', JSON.stringify(state.users));
-            localStorage.setItem('shadowSlaveFanfics', JSON.stringify(state.fanfics));
-            localStorage.setItem('shadowSlaveNextId', state.nextFanficId.toString());
-            if (state.currentUser) {
-                localStorage.setItem('shadowSlaveCurrentUser', JSON.stringify(state.currentUser));
-            } else {
-                localStorage.removeItem('shadowSlaveCurrentUser');
+            try {
+                localStorage.setItem('shadowSlaveUsers', JSON.stringify(state.users));
+                localStorage.setItem('shadowSlaveFanfics', JSON.stringify(state.fanfics));
+                localStorage.setItem('shadowSlaveNextId', state.nextFanficId.toString());
+                if (state.currentUser) {
+                    localStorage.setItem('shadowSlaveCurrentUser', JSON.stringify(state.currentUser));
+                } else {
+                    localStorage.removeItem('shadowSlaveCurrentUser');
+                }
+                console.log('Saved to localStorage');
+            } catch (e) {
+                console.error('Error saving to localStorage:', e);
             }
         }
 
@@ -1151,14 +1171,17 @@
                 // Re-add event listener for the button
                 const buttonId = page === 'home' ? 'addFirstFanficHomeBtn' : 'addFirstFanficLibraryBtn';
                 setTimeout(() => {
-                    document.getElementById(buttonId)?.addEventListener('click', () => {
-                        if (!state.currentUser) {
-                            alert('Please log in to create a fan fiction.');
-                            loginModal.classList.add('active');
-                        } else {
-                            navigateTo('add-fanfic');
-                        }
-                    });
+                    const button = document.getElementById(buttonId);
+                    if (button) {
+                        button.addEventListener('click', () => {
+                            if (!state.currentUser) {
+                                alert('Please log in to create a fan fiction.');
+                                loginModal.classList.add('active');
+                            } else {
+                                navigateTo('add-fanfic');
+                            }
+                        });
+                    }
                 }, 100);
                 return;
             }
@@ -1184,7 +1207,7 @@
                         <p class="fanfic-summary">${fanfic.summary}</p>
                         <div class="fanfic-meta">
                             <div>
-                                <i class="fas fa-layer-group"></i> ${fanfic.chapters.length} chapter${fanfic.chapters.length !== 1 ? 's' : ''}
+                                <i class="fas fa-layer-group"></i> ${fanfic.chapters ? fanfic.chapters.length : 0} chapter${fanfic.chapters && fanfic.chapters.length !== 1 ? 's' : ''}
                             </div>
                             <div>
                                 <span class="status">${statusText[fanfic.status]}</span>
@@ -1217,9 +1240,12 @@
                 `;
                 
                 setTimeout(() => {
-                    document.getElementById('loginFromMyFics')?.addEventListener('click', () => {
-                        loginModal.classList.add('active');
-                    });
+                    const button = document.getElementById('loginFromMyFics');
+                    if (button) {
+                        button.addEventListener('click', () => {
+                            loginModal.classList.add('active');
+                        });
+                    }
                 }, 100);
                 return;
             }
@@ -1261,7 +1287,7 @@
                         <p class="fanfic-summary">${fanfic.summary}</p>
                         <div class="fanfic-meta">
                             <div>
-                                <i class="fas fa-layer-group"></i> ${fanfic.chapters.length} chapter${fanfic.chapters.length !== 1 ? 's' : ''}
+                                <i class="fas fa-layer-group"></i> ${fanfic.chapters ? fanfic.chapters.length : 0} chapter${fanfic.chapters && fanfic.chapters.length !== 1 ? 's' : ''}
                             </div>
                             <div>
                                 <span class="status">${statusText[fanfic.status]}</span>
@@ -1275,18 +1301,24 @@
                 `;
                 
                 // Add click event to read fanfic
-                fanficCard.querySelector('.read-btn').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    openReader(fanfic.id);
-                });
+                const readBtn = fanficCard.querySelector('.read-btn');
+                if (readBtn) {
+                    readBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openReader(fanfic.id);
+                    });
+                }
                 
                 // Add click event to add chapter
-                fanficCard.querySelector('.add-chapter-btn').addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    state.currentFanfic = fanfic;
-                    addChapterForm.classList.add('active');
-                    addChapterForm.scrollIntoView({ behavior: 'smooth' });
-                });
+                const addChapterBtn = fanficCard.querySelector('.add-chapter-btn');
+                if (addChapterBtn) {
+                    addChapterBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        state.currentFanfic = fanfic;
+                        addChapterForm.classList.add('active');
+                        addChapterForm.scrollIntoView({ behavior: 'smooth' });
+                    });
+                }
                 
                 // Card click still opens reader
                 fanficCard.addEventListener('click', () => {
@@ -1299,8 +1331,15 @@
 
         // Open reader
         function openReader(fanficId) {
+            console.log('Opening reader for fanfic ID:', fanficId);
             const fanfic = state.fanfics.find(f => f.id === fanficId);
-            if (!fanfic) return;
+            if (!fanfic) {
+                console.error('Fanfic not found with ID:', fanficId);
+                alert('Story not found!');
+                return;
+            }
+            
+            console.log('Found fanfic:', fanfic);
             
             state.currentFanfic = fanfic;
             state.currentChapter = 1;
@@ -1311,27 +1350,46 @@
             
             // Populate chapter select
             chapterSelect.innerHTML = '';
-            fanfic.chapters.forEach((chapter, index) => {
+            if (fanfic.chapters && fanfic.chapters.length > 0) {
+                fanfic.chapters.forEach((chapter, index) => {
+                    const option = document.createElement('option');
+                    option.value = index + 1;
+                    option.textContent = `Chapter ${index + 1}: ${chapter.title || 'Untitled'}`;
+                    chapterSelect.appendChild(option);
+                });
+            } else {
+                // No chapters
                 const option = document.createElement('option');
-                option.value = index + 1;
-                option.textContent = `Chapter ${index + 1}: ${chapter.title}`;
+                option.value = 1;
+                option.textContent = 'No chapters available';
                 chapterSelect.appendChild(option);
-            });
+            }
             
             // Load first chapter automatically
             loadChapter(1);
             
             // Navigate to reader
             navigateTo('reader');
-            
-            console.log('Opening fanfic:', fanfic);
-            console.log('Chapters:', fanfic.chapters);
         }
 
         // Load chapter
         function loadChapter(chapterNumber) {
-            if (!state.currentFanfic || chapterNumber < 1 || chapterNumber > state.currentFanfic.chapters.length) {
-                console.error('Cannot load chapter:', chapterNumber, 'for fanfic:', state.currentFanfic);
+            console.log('Loading chapter:', chapterNumber, 'for fanfic:', state.currentFanfic);
+            
+            if (!state.currentFanfic) {
+                console.error('No current fanfic selected');
+                chapterContent.innerHTML = '<p>No story selected.</p>';
+                return;
+            }
+            
+            if (!state.currentFanfic.chapters || state.currentFanfic.chapters.length === 0) {
+                console.error('No chapters in this fanfic');
+                chapterContent.innerHTML = '<p>This story has no chapters yet.</p>';
+                return;
+            }
+            
+            if (chapterNumber < 1 || chapterNumber > state.currentFanfic.chapters.length) {
+                console.error('Chapter number out of range:', chapterNumber);
                 chapterContent.innerHTML = '<p>Chapter not found.</p>';
                 return;
             }
@@ -1339,18 +1397,20 @@
             state.currentChapter = chapterNumber;
             const chapter = state.currentFanfic.chapters[chapterNumber - 1];
             
+            console.log('Chapter to load:', chapter);
+            
             // Update UI
             chapterSelect.value = chapterNumber;
             
             // Format the content properly
-            let formattedContent = `<h3 style="margin-bottom: 30px; color: var(--accent-color); border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">${chapter.title}</h3>`;
+            let formattedContent = `<h3 style="margin-bottom: 30px; color: var(--accent-color); border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">${chapter.title || 'Untitled Chapter'}</h3>`;
             
             // Add chapter content
             if (chapter.content && chapter.content.trim()) {
                 // Preserve line breaks and paragraphs
                 const contentWithParagraphs = chapter.content
                     .split('\n\n')
-                    .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>')}</p>`)
+                    .map(paragraph => `<p style="margin-bottom: 20px;">${paragraph.replace(/\n/g, '<br>')}</p>`)
                     .join('');
                 
                 formattedContent += `<div class="chapter-text">${contentWithParagraphs}</div>`;
@@ -1363,8 +1423,6 @@
             // Update button states
             prevChapter.disabled = chapterNumber === 1;
             nextChapter.disabled = chapterNumber === state.currentFanfic.chapters.length;
-            
-            console.log('Loaded chapter:', chapter);
         }
 
         // Add new fanfic
@@ -1392,6 +1450,8 @@
                 ]
             };
             
+            console.log('Adding new fanfic:', newFanfic);
+            
             state.fanfics.unshift(newFanfic);
             saveToStorage();
             
@@ -1400,8 +1460,6 @@
             
             // Show success message
             alert('Your fan fiction has been published successfully! Click on it to read your story.');
-            
-            console.log('Added new fanfic:', newFanfic);
         }
 
         // Add chapter to existing fanfic
@@ -1412,6 +1470,11 @@
             if (!chapterContentText.trim()) {
                 alert('Please write some content for your chapter!');
                 return;
+            }
+            
+            // Ensure chapters array exists
+            if (!fanfic.chapters) {
+                fanfic.chapters = [];
             }
             
             const newChapter = {
@@ -1429,8 +1492,6 @@
             
             // Show success message
             alert('Chapter added successfully!');
-            
-            console.log('Added chapter to fanfic:', fanficId, newChapter);
         }
 
         // Event Listeners
@@ -1645,51 +1706,36 @@
                 alert('To report an issue, please email: shadow-slave-fanfic@example.com\n\nInclude details about the issue and steps to reproduce if possible.');
             });
             
-            // Add test data button for debugging (hidden)
-            const testBtn = document.createElement('button');
-            testBtn.textContent = 'Add Test Story';
-            testBtn.style.position = 'fixed';
-            testBtn.style.bottom = '10px';
-            testBtn.style.right = '10px';
-            testBtn.style.zIndex = '9999';
-            testBtn.style.padding = '5px 10px';
-            testBtn.style.fontSize = '12px';
-            testBtn.style.backgroundColor = 'var(--accent-color)';
-            testBtn.style.color = 'white';
-            testBtn.style.border = 'none';
-            testBtn.style.borderRadius = '4px';
-            testBtn.style.cursor = 'pointer';
-            testBtn.style.display = 'none'; // Hidden by default
-            document.body.appendChild(testBtn);
+            // Add debug test button
+            const debugBtn = document.createElement('button');
+            debugBtn.textContent = 'Debug';
+            debugBtn.style.position = 'fixed';
+            debugBtn.style.bottom = '10px';
+            debugBtn.style.right = '10px';
+            debugBtn.style.zIndex = '9999';
+            debugBtn.style.padding = '8px 12px';
+            debugBtn.style.fontSize = '12px';
+            debugBtn.style.backgroundColor = '#ff4444';
+            debugBtn.style.color = 'white';
+            debugBtn.style.border = 'none';
+            debugBtn.style.borderRadius = '4px';
+            debugBtn.style.cursor = 'pointer';
+            document.body.appendChild(debugBtn);
             
-            testBtn.addEventListener('click', () => {
-                if (!state.currentUser) {
-                    alert('Please log in first.');
-                    return;
+            debugBtn.addEventListener('click', () => {
+                console.log('=== DEBUG INFO ===');
+                console.log('Current user:', state.currentUser);
+                console.log('All fanfics:', state.fanfics);
+                console.log('Current fanfic:', state.currentFanfic);
+                console.log('LocalStorage users:', localStorage.getItem('shadowSlaveUsers'));
+                console.log('LocalStorage fanfics:', localStorage.getItem('shadowSlaveFanfics'));
+                
+                if (state.fanfics.length > 0) {
+                    console.log('First fanfic details:', state.fanfics[0]);
+                    console.log('First fanfic chapters:', state.fanfics[0].chapters);
                 }
                 
-                const testFanfic = {
-                    id: state.nextFanficId++,
-                    title: "Test Story: Shadows of Destiny",
-                    author: state.currentUser.username,
-                    authorId: state.currentUser.id,
-                    summary: "A test story to demonstrate the reading functionality.",
-                    category: "sunny",
-                    status: "ongoing",
-                    date: new Date().toISOString().split('T')[0],
-                    chapters: [
-                        {
-                            chapterNumber: 1,
-                            title: "The Beginning",
-                            content: "The nightmare gate shimmered with an eerie light, casting long shadows across the broken concrete. Sunny stood before it, his heart pounding like a war drum.\n\nHe could feel the oppressive weight of the Spell, the inevitable pull into another harrowing trial. But something was different this time.\n\nAs he reached out, a shadow detached itself from the wall—not his own, but something else. A whisper, faint yet clear, echoed in his mind: 'Choose differently, Lost from Light.'\n\nHe hesitated, his hand hovering inches from the pulsating surface. What if he didn't follow them? What if he took another path?"
-                        }
-                    ]
-                };
-                
-                state.fanfics.unshift(testFanfic);
-                saveToStorage();
-                renderFanfics('home');
-                alert('Test story added! You can now click on it to read.');
+                alert('Debug info logged to console (F12 to view)');
             });
         });
     </script>
