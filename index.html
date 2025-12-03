@@ -413,7 +413,7 @@
             gap: 10px;
         }
         
-        .chapter-content {
+        .reader-content {
             background-color: var(--secondary-dark);
             border-radius: 8px;
             padding: 40px;
@@ -438,7 +438,7 @@
             color: var(--text-primary);
         }
         
-        .chapter-content h3 {
+        .reader-content h3 {
             color: var(--accent-color);
             margin-bottom: 30px;
             border-bottom: 2px solid var(--border-color);
@@ -638,7 +638,7 @@
                 gap: 30px;
             }
             
-            .chapter-content {
+            .reader-content {
                 padding: 20px;
             }
             
@@ -840,8 +840,8 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="chapterContent">Chapter Content</label>
-                            <textarea id="chapterContent" class="form-control" placeholder="Write your chapter here..." rows="15" required></textarea>
+                            <label for="chapterContentText">Chapter Content</label>
+                            <textarea id="chapterContentText" class="form-control" placeholder="Write your chapter here..." rows="15" required></textarea>
                         </div>
                         
                         <div class="form-actions">
@@ -876,7 +876,7 @@
                 </div>
             </div>
             
-            <div class="chapter-content" id="chapterContent">
+            <div class="reader-content" id="readerContent">
                 <!-- Content will be loaded here -->
                 <p style="color: var(--text-secondary); font-style: italic;">Select a chapter to start reading...</p>
             </div>
@@ -1037,7 +1037,7 @@
         const chapterSelect = document.getElementById('chapterSelect');
         const prevChapter = document.getElementById('prevChapter');
         const nextChapter = document.getElementById('nextChapter');
-        const chapterContent = document.getElementById('chapterContent');
+        const readerContent = document.getElementById('readerContent'); // CHANGED from chapterContent to readerContent
         const readerTitle = document.getElementById('readerTitle');
         const readerAuthor = document.getElementById('readerAuthor');
         const addChapterForm = document.getElementById('addChapterForm');
@@ -1174,7 +1174,7 @@
                     return;
                 }
             } else if (page === 'reader') {
-                // IMPORTANT FIX: Only show the reader page, hide everything else
+                // Show reader page
                 document.getElementById('reader-page').classList.add('active');
                 
                 // Also hide the hero section if it's visible
@@ -1362,7 +1362,7 @@
             });
         }
 
-        // Open reader - FIXED VERSION
+        // Open reader
         function openReader(fanficId) {
             console.log('=== OPENING READER ===');
             console.log('Fanfic ID:', fanficId);
@@ -1411,7 +1411,7 @@
             }, 50);
         }
 
-        // Load chapter - FIXED VERSION
+        // Load chapter
         function loadChapter(chapterNumber) {
             console.log('=== LOADING CHAPTER ===');
             console.log('Chapter number:', chapterNumber);
@@ -1419,19 +1419,19 @@
             
             if (!state.currentFanfic) {
                 console.error('No current fanfic selected');
-                chapterContent.innerHTML = '<h3>No Story Selected</h3><p>Please select a story to read.</p>';
+                readerContent.innerHTML = '<h3>No Story Selected</h3><p>Please select a story to read.</p>';
                 return;
             }
             
             if (!state.currentFanfic.chapters || state.currentFanfic.chapters.length === 0) {
                 console.error('No chapters in this fanfic');
-                chapterContent.innerHTML = '<h3>No Chapters</h3><p>This story has no chapters yet.</p>';
+                readerContent.innerHTML = '<h3>No Chapters</h3><p>This story has no chapters yet.</p>';
                 return;
             }
             
             if (chapterNumber < 1 || chapterNumber > state.currentFanfic.chapters.length) {
                 console.error('Chapter number out of range:', chapterNumber);
-                chapterContent.innerHTML = '<h3>Chapter Not Found</h3><p>The requested chapter does not exist.</p>';
+                readerContent.innerHTML = '<h3>Chapter Not Found</h3><p>The requested chapter does not exist.</p>';
                 return;
             }
             
@@ -1445,7 +1445,7 @@
             // Update UI
             chapterSelect.value = chapterNumber;
             
-            // Create HTML content - SIMPLE AND RELIABLE
+            // Create HTML content
             let html = `<h3>${chapter.title || 'Untitled Chapter'}</h3>`;
             
             if (chapter.content && chapter.content.trim()) {
@@ -1470,8 +1470,8 @@
                         <p>Chapter ${chapterNumber} of ${state.currentFanfic.chapters.length} | ${state.currentFanfic.status === 'completed' ? 'Completed' : 'Ongoing'}</p>
                     </div>`;
             
-            // Set the content
-            chapterContent.innerHTML = html;
+            // Set the content - FIXED: Now using readerContent instead of chapterContent
+            readerContent.innerHTML = html;
             console.log('Chapter content set successfully');
             
             // Update button states
@@ -1715,7 +1715,7 @@
             chapterForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const chapterTitle = document.getElementById('chapterTitle').value;
-                const chapterContentText = document.getElementById('chapterContent').value;
+                const chapterContentText = document.getElementById('chapterContentText').value; // Changed to chapterContentText
                 
                 if (!state.currentFanfic) return;
                 
