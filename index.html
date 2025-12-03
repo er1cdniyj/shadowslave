@@ -64,6 +64,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
         }
         
         .logo-icon {
@@ -100,6 +101,7 @@
             font-size: 16px;
             transition: color 0.3s;
             position: relative;
+            cursor: pointer;
         }
         
         nav a:hover {
@@ -124,6 +126,22 @@
         .user-actions {
             display: flex;
             gap: 15px;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-info.active {
+            display: flex;
+        }
+        
+        .username {
+            color: var(--accent-color);
+            font-weight: 600;
         }
         
         .btn {
@@ -155,6 +173,11 @@
         
         .btn-outline:hover {
             background-color: rgba(157, 78, 221, 0.1);
+        }
+        
+        .btn-small {
+            padding: 5px 12px;
+            font-size: 14px;
         }
         
         /* Hero Section */
@@ -195,6 +218,7 @@
         /* Main Content */
         main {
             padding: 50px 0;
+            min-height: 600px;
         }
         
         .section-title {
@@ -216,6 +240,45 @@
             background-color: var(--accent-color);
         }
         
+        /* Page Sections */
+        .page-section {
+            display: none;
+        }
+        
+        .page-section.active {
+            display: block;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background-color: var(--secondary-dark);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .empty-state-icon {
+            font-size: 64px;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+        
+        .empty-state h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .empty-state p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Filters */
         .filters {
             display: flex;
             gap: 15px;
@@ -253,6 +316,7 @@
             overflow: hidden;
             border: 1px solid var(--border-color);
             transition: all 0.3s;
+            cursor: pointer;
         }
         
         .fanfic-card:hover {
@@ -296,6 +360,10 @@
             font-size: 0.95rem;
             margin-bottom: 15px;
             line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         
         .fanfic-meta {
@@ -307,18 +375,88 @@
             padding-top: 15px;
         }
         
+        /* Reader Page */
+        .reader-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .reader-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            color: var(--text-primary);
+        }
+        
+        .reader-subtitle {
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            margin-top: 5px;
+        }
+        
+        .chapter-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: var(--secondary-dark);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .chapter-nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chapter-content {
+            background-color: var(--secondary-dark);
+            border-radius: 8px;
+            padding: 40px;
+            border: 1px solid var(--border-color);
+            line-height: 1.8;
+            font-size: 1.1rem;
+            white-space: pre-wrap;
+        }
+        
+        .chapter-content p {
+            margin-bottom: 20px;
+        }
+        
         /* Add Fanfic Form */
-        .add-fanfic-form {
+        .add-fanfic-form, .login-form, .signup-form {
             background-color: var(--secondary-dark);
             border-radius: 8px;
             padding: 30px;
             border: 1px solid var(--border-color);
             margin-bottom: 50px;
-            display: none;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
         
-        .add-fanfic-form.active {
-            display: block;
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .close-form {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-form:hover {
+            color: var(--accent-color);
         }
         
         .form-group {
@@ -351,6 +489,56 @@
         textarea.form-control {
             min-height: 150px;
             resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: var(--secondary-dark);
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+        }
+        
+        /* Add Chapter Form */
+        .add-chapter-form {
+            background-color: var(--secondary-dark);
+            border-radius: 8px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .add-chapter-form.active {
+            display: block;
         }
         
         /* Footer */
@@ -410,6 +598,8 @@
             
             nav ul {
                 gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
             }
             
             .hero h1 {
@@ -428,6 +618,15 @@
                 flex-direction: column;
                 gap: 30px;
             }
+            
+            .chapter-content {
+                padding: 20px;
+            }
+            
+            .reader-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
@@ -436,7 +635,7 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <div class="logo">
+                <div class="logo" id="homeBtn">
                     <div class="logo-icon">
                         <i class="fas fa-moon"></i>
                     </div>
@@ -448,15 +647,17 @@
                 
                 <nav>
                     <ul>
-                        <li><a href="#" class="active">Home</a></li>
-                        <li><a href="#">Library</a></li>
-                        <li><a href="#">Popular</a></li>
-                        <li><a href="#">Authors</a></li>
-                        <li><a href="#">Forums</a></li>
+                        <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                        <li><a href="#" class="nav-link" data-page="library">Library</a></li>
+                        <li><a href="#" class="nav-link" data-page="my-fics">My Fics</a></li>
                     </ul>
                 </nav>
                 
                 <div class="user-actions">
+                    <div class="user-info" id="userInfo">
+                        <span class="username" id="usernameDisplay">Guest</span>
+                        <button class="btn btn-outline btn-small" id="logoutBtn">Log Out</button>
+                    </div>
                     <button class="btn btn-outline" id="loginBtn">Log In</button>
                     <button class="btn btn-primary" id="signupBtn">Sign Up</button>
                 </div>
@@ -464,86 +665,258 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="form-header">
+                <h2 class="section-title">Log In</h2>
+                <button class="close-form" id="closeLogin">&times;</button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" class="form-control" placeholder="Enter your username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Log In</button>
+                    <button type="button" class="btn btn-outline" id="switchToSignup">Create Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal-overlay" id="signupModal">
+        <div class="modal-content">
+            <div class="form-header">
+                <h2 class="section-title">Sign Up</h2>
+                <button class="close-form" id="closeSignup">&times;</button>
+            </div>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupUsername">Username</label>
+                    <input type="text" id="signupUsername" class="form-control" placeholder="Choose a username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" class="form-control" placeholder="Enter your email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" class="form-control" placeholder="Choose a password (min 6 characters)" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm your password" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                    <button type="button" class="btn btn-outline" id="switchToLogin">Already have an account?</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hero Section (Home Page) -->
+    <section class="hero page-section active" id="home-page">
         <div class="container">
             <div class="hero-content">
                 <h1>Welcome to the Shadow Slave Fan Fiction Hub</h1>
-                <p>Explore a world of fan-created stories set in the Shadow Slave universe. Read, write, and share your own tales of Nephis, Sunny, and the Nightmare Spell.</p>
-                <button class="btn btn-primary" id="addFanficBtn">Add Your Fan Fiction</button>
+                <p>Create, share, and read fan fiction set in the Shadow Slave universe. Write your own tales of Nephis, Sunny, Cassie and the Nightmare Spell.</p>
+                <button class="btn btn-primary" id="addFanficBtn">Start Writing</button>
             </div>
         </div>
     </section>
 
-    <!-- Main Content -->
+    <!-- Main Content Area -->
     <main class="container">
-        <h2 class="section-title">Recently Added Fan Fictions</h2>
-        
-        <!-- Filter Buttons -->
-        <div class="filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="completed">Completed</button>
-            <button class="filter-btn" data-filter="ongoing">Ongoing</button>
-            <button class="filter-btn" data-filter="sunny">Sunny-centric</button>
-            <button class="filter-btn" data-filter="nephis">Nephis-centric</button>
-            <button class="filter-btn" data-filter="cassie">Cassie-centric</button>
+        <!-- Home Page Content -->
+        <div class="page-section active" id="home-content">
+            <h2 class="section-title">Community Fan Fictions</h2>
+            
+            <!-- Filter Buttons -->
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All Stories</button>
+                <button class="filter-btn" data-filter="sunny">Sunny-centric</button>
+                <button class="filter-btn" data-filter="nephis">Nephis-centric</button>
+                <button class="filter-btn" data-filter="cassie">Cassie-centric</button>
+                <button class="filter-btn" data-filter="ensemble">Ensemble</button>
+                <button class="filter-btn" data-filter="alternate">Alternate Universe</button>
+            </div>
+            
+            <!-- Fanfics Grid -->
+            <div class="fanfics-grid" id="fanficsContainer">
+                <!-- Empty state by default -->
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>No Fan Fictions Yet</h3>
+                    <p>Be the first to write a Shadow Slave fan fiction! Share your story with the community.</p>
+                    <button class="btn btn-primary" id="addFirstFanficBtn">Write Your First Story</button>
+                </div>
+            </div>
         </div>
         
-        <!-- Fanfics Grid -->
-        <div class="fanfics-grid" id="fanficsContainer">
-            <!-- Fanfic cards will be generated by JavaScript -->
+        <!-- Library Page -->
+        <div class="page-section" id="library-page">
+            <h2 class="section-title">Fan Fiction Library</h2>
+            
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All Stories</button>
+                <button class="filter-btn" data-filter="sunny">Sunny-centric</button>
+                <button class="filter-btn" data-filter="nephis">Nephis-centric</button>
+                <button class="filter-btn" data-filter="cassie">Cassie-centric</button>
+                <button class="filter-btn" data-filter="ensemble">Ensemble</button>
+                <button class="filter-btn" data-filter="alternate">Alternate Universe</button>
+            </div>
+            
+            <div class="fanfics-grid" id="libraryContainer">
+                <!-- Empty state by default -->
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Library is Empty</h3>
+                    <p>No one has published any fan fiction yet. Be the first to share your story!</p>
+                    <button class="btn btn-primary" id="addFirstFanficLibraryBtn">Write First Story</button>
+                </div>
+            </div>
         </div>
         
-        <!-- Add Fanfic Form (Hidden by default) -->
-        <div class="add-fanfic-form" id="addFanficForm">
-            <h2 class="section-title">Add Your Fan Fiction</h2>
-            <form id="fanficForm">
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" id="title" class="form-control" placeholder="Enter your fan fiction title" required>
+        <!-- My Fics Page -->
+        <div class="page-section" id="my-fics-page">
+            <div id="myFicsContainer">
+                <h2 class="section-title">My Fan Fictions</h2>
+                
+                <div class="fanfics-grid" id="myFicsList">
+                    <!-- Empty state by default -->
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-feather"></i>
+                        </div>
+                        <h3>No Stories Yet</h3>
+                        <p>You haven't created any fan fictions yet. Start writing your first Shadow Slave story!</p>
+                        <button class="btn btn-primary" id="addFanficFromMyFics">Start Writing</button>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="author">Author Name</label>
-                    <input type="text" id="author" class="form-control" placeholder="Enter your author name" required>
+                <!-- Add Chapter Form (for existing fics) -->
+                <div class="add-chapter-form" id="addChapterForm">
+                    <h3 class="section-title">Add New Chapter</h3>
+                    <form id="chapterForm">
+                        <div class="form-group">
+                            <label for="chapterTitle">Chapter Title</label>
+                            <input type="text" id="chapterTitle" class="form-control" placeholder="Enter chapter title" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="chapterContent">Chapter Content</label>
+                            <textarea id="chapterContent" class="form-control" placeholder="Write your chapter here..." rows="15" required></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Add Chapter</button>
+                            <button type="button" class="btn btn-outline" id="cancelChapterBtn">Cancel</button>
+                        </div>
+                    </form>
                 </div>
-                
-                <div class="form-group">
-                    <label for="summary">Summary</label>
-                    <textarea id="summary" class="form-control" placeholder="Brief summary of your fan fiction (max 300 characters)" maxlength="300" required></textarea>
+            </div>
+        </div>
+        
+        <!-- Reader Page -->
+        <div class="page-section" id="reader-page">
+            <div class="reader-header">
+                <div>
+                    <h1 class="reader-title" id="readerTitle">Story Title</h1>
+                    <p class="reader-subtitle" id="readerAuthor">by Author</p>
                 </div>
-                
-                <div class="form-group">
-                    <label for="category">Category</label>
-                    <select id="category" class="form-control" required>
-                        <option value="">Select a category</option>
-                        <option value="sunny">Sunny-centric</option>
-                        <option value="nephis">Nephis-centric</option>
-                        <option value="cassie">Cassie-centric</option>
-                        <option value="ensemble">Ensemble Cast</option>
-                        <option value="alternate">Alternate Universe</option>
+                <button class="btn btn-outline" id="backToLibrary">Back to Library</button>
+            </div>
+            
+            <div class="chapter-selector">
+                <div>
+                    <strong>Chapter:</strong>
+                    <select id="chapterSelect" class="form-control" style="width: auto; display: inline-block; margin-left: 10px;">
+                        <option value="1">Chapter 1</option>
                     </select>
                 </div>
-                
-                <div class="form-group">
-                    <label for="status">Status</label>
-                    <select id="status" class="form-control" required>
-                        <option value="ongoing">Ongoing</option>
-                        <option value="completed">Completed</option>
-                        <option value="hiatus">On Hiatus</option>
-                    </select>
+                <div class="chapter-nav">
+                    <button class="btn btn-outline" id="prevChapter"><i class="fas fa-chevron-left"></i> Previous</button>
+                    <button class="btn btn-outline" id="nextChapter">Next <i class="fas fa-chevron-right"></i></button>
                 </div>
-                
-                <div class="form-group">
-                    <label for="chapters">Number of Chapters</label>
-                    <input type="number" id="chapters" class="form-control" min="1" value="1" required>
+            </div>
+            
+            <div class="chapter-content" id="chapterContent">
+                <p>Select a chapter to start reading.</p>
+            </div>
+        </div>
+        
+        <!-- Add Fanfic Form -->
+        <div class="page-section" id="add-fanfic-page">
+            <div class="add-fanfic-form">
+                <div class="form-header">
+                    <h2 class="section-title">Create New Fan Fiction</h2>
+                    <button class="close-form" id="closeAddFanfic">&times;</button>
                 </div>
-                
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Submit Fan Fiction</button>
-                    <button type="button" class="btn btn-outline" id="cancelBtn">Cancel</button>
-                </div>
-            </form>
+                <form id="fanficForm">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" id="title" class="form-control" placeholder="Enter your fan fiction title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="summary">Summary</label>
+                        <textarea id="summary" class="form-control" placeholder="Brief summary of your fan fiction (max 300 characters)" maxlength="300" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" class="form-control" required>
+                            <option value="">Select a category</option>
+                            <option value="sunny">Sunny-centric</option>
+                            <option value="nephis">Nephis-centric</option>
+                            <option value="cassie">Cassie-centric</option>
+                            <option value="ensemble">Ensemble Cast</option>
+                            <option value="alternate">Alternate Universe</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" class="form-control" required>
+                            <option value="ongoing">Ongoing</option>
+                            <option value="completed">Completed</option>
+                            <option value="hiatus">On Hiatus</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="firstChapterTitle">First Chapter Title</label>
+                        <input type="text" id="firstChapterTitle" class="form-control" placeholder="Enter title for first chapter" value="Chapter 1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="firstChapter">First Chapter Content</label>
+                        <textarea id="firstChapter" class="form-control" placeholder="Write the content of your first chapter here..." rows="15" required></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Publish Fan Fiction</button>
+                        <button type="button" class="btn btn-outline" id="cancelBtn">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </main>
 
@@ -559,20 +932,19 @@
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Submission Guidelines</a></li>
-                        <li><a href="#">Community Rules</a></li>
-                        <li><a href="#">Support the Site</a></li>
+                        <li><a href="#" class="nav-link" data-page="home">Home</a></li>
+                        <li><a href="#" class="nav-link" data-page="library">Library</a></li>
+                        <li><a href="#" class="nav-link" data-page="my-fics">My Stories</a></li>
+                        <li><a href="#" id="addFanficFooter">Write New Story</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-section">
-                    <h3>Connect</h3>
+                    <h3>Community</h3>
                     <ul>
-                        <li><a href="#">Discord Community</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Reddit</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#" id="communityGuidelines">Submission Guidelines</a></li>
+                        <li><a href="#" id="aboutUs">About This Site</a></li>
+                        <li><a href="#" id="reportIssue">Report Issue</a></li>
                     </ul>
                 </div>
             </div>
@@ -584,85 +956,16 @@
     </footer>
 
     <script>
-        // Sample fan fiction data
-        const fanfics = [
-            {
-                id: 1,
-                title: "Echoes of the Forgotten Shore",
-                author: "ShadowWriter87",
-                summary: "An alternate telling of Sunny's time on the Forgotten Shore, exploring what might have happened if he had formed a different alliance.",
-                category: "sunny",
-                status: "completed",
-                chapters: 12,
-                wordCount: "45k",
-                date: "2023-10-15"
-            },
-            {
-                id: 2,
-                title: "Flame and Shadow",
-                author: "NephisFan99",
-                summary: "A Nephis-centric story following her journey after the events of the Forgotten Shore, delving into her inner struggles and leadership challenges.",
-                category: "nephis",
-                status: "ongoing",
-                chapters: 8,
-                wordCount: "32k",
-                date: "2023-11-02"
-            },
-            {
-                id: 3,
-                title: "Whispers of Fate",
-                author: "CassieVisionary",
-                summary: "Cassie's perspective on key events from the novel, with added scenes that explore her visions and their impact on the group's dynamics.",
-                category: "cassie",
-                status: "ongoing",
-                chapters: 5,
-                wordCount: "18k",
-                date: "2023-11-10"
-            },
-            {
-                id: 4,
-                title: "The Nightmare's Legacy",
-                author: "DreamWeaver",
-                summary: "An ensemble cast story set years after the main events, following new characters affected by the legacy of the Nightmare Spell.",
-                category: "ensemble",
-                status: "ongoing",
-                chapters: 15,
-                wordCount: "62k",
-                date: "2023-10-28"
-            },
-            {
-                id: 5,
-                title: "Shadow Without a Master",
-                author: "SoulSmith",
-                summary: "What if Sunny never met Nephis? This AU explores Sunny's solo journey through the Dream Realm with only his shadows as companions.",
-                category: "sunny",
-                status: "completed",
-                chapters: 20,
-                wordCount: "85k",
-                date: "2023-09-20"
-            },
-            {
-                id: 6,
-                title: "The Changing Star's Resolve",
-                author: "ChangingStar42",
-                summary: "A deep character study of Nephis, focusing on her motivations, sacrifices, and the weight of her destiny as a Changing Star.",
-                category: "nephis",
-                status: "ongoing",
-                chapters: 7,
-                wordCount: "28k",
-                date: "2023-11-05"
-            }
-        ];
-
-        // DOM elements
-        const fanficsContainer = document.getElementById('fanficsContainer');
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const addFanficBtn = document.getElementById('addFanficBtn');
-        const addFanficForm = document.getElementById('addFanficForm');
-        const fanficForm = document.getElementById('fanficForm');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const loginBtn = document.getElementById('loginBtn');
-        const signupBtn = document.getElementById('signupBtn');
+        // State Management
+        const state = {
+            currentUser: null,
+            currentPage: 'home',
+            currentFanfic: null,
+            currentChapter: 1,
+            fanfics: [],
+            users: [],
+            nextFanficId: 1
+        };
 
         // Category icons mapping
         const categoryIcons = {
@@ -680,17 +983,183 @@
             hiatus: "On Hiatus"
         };
 
-        // Initialize the page with fanfics
-        function renderFanfics(filter = 'all') {
-            fanficsContainer.innerHTML = '';
+        // DOM elements
+        const userInfo = document.getElementById('userInfo');
+        const usernameDisplay = document.getElementById('usernameDisplay');
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginModal = document.getElementById('loginModal');
+        const signupModal = document.getElementById('signupModal');
+        const closeLogin = document.getElementById('closeLogin');
+        const closeSignup = document.getElementById('closeSignup');
+        const switchToSignup = document.getElementById('switchToSignup');
+        const switchToLogin = document.getElementById('switchToLogin');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const pageSections = document.querySelectorAll('.page-section');
+        const homeBtn = document.getElementById('homeBtn');
+        const addFanficBtn = document.getElementById('addFanficBtn');
+        const addFirstFanficBtn = document.getElementById('addFirstFanficBtn');
+        const addFirstFanficLibraryBtn = document.getElementById('addFirstFanficLibraryBtn');
+        const addFanficFromMyFics = document.getElementById('addFanficFromMyFics');
+        const addFanficFooter = document.getElementById('addFanficFooter');
+        const fanficForm = document.getElementById('fanficForm');
+        const closeAddFanfic = document.getElementById('closeAddFanfic');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const fanficsContainer = document.getElementById('fanficsContainer');
+        const libraryContainer = document.getElementById('libraryContainer');
+        const myFicsList = document.getElementById('myFicsList');
+        const readerPage = document.getElementById('reader-page');
+        const backToLibrary = document.getElementById('backToLibrary');
+        const chapterSelect = document.getElementById('chapterSelect');
+        const prevChapter = document.getElementById('prevChapter');
+        const nextChapter = document.getElementById('nextChapter');
+        const chapterContent = document.getElementById('chapterContent');
+        const readerTitle = document.getElementById('readerTitle');
+        const readerAuthor = document.getElementById('readerAuthor');
+        const addChapterForm = document.getElementById('addChapterForm');
+        const chapterForm = document.getElementById('chapterForm');
+        const cancelChapterBtn = document.getElementById('cancelChapterBtn');
+
+        // Initialize from localStorage
+        function initializeFromStorage() {
+            // Load users from localStorage
+            const storedUsers = localStorage.getItem('shadowSlaveUsers');
+            if (storedUsers) {
+                state.users = JSON.parse(storedUsers);
+            }
             
-            const filteredFanfics = filter === 'all' 
-                ? fanfics 
-                : fanfics.filter(fanfic => fanfic.category === filter || fanfic.status === filter);
+            // Load fanfics from localStorage
+            const storedFanfics = localStorage.getItem('shadowSlaveFanfics');
+            if (storedFanfics) {
+                state.fanfics = JSON.parse(storedFanfics);
+            }
             
-            filteredFanfics.forEach(fanfic => {
+            // Load next ID from localStorage
+            const storedNextId = localStorage.getItem('shadowSlaveNextId');
+            if (storedNextId) {
+                state.nextFanficId = parseInt(storedNextId);
+            }
+            
+            // Check if user is logged in from localStorage
+            const currentUser = localStorage.getItem('shadowSlaveCurrentUser');
+            if (currentUser) {
+                state.currentUser = JSON.parse(currentUser);
+                updateUserUI();
+            }
+            
+            // Render fanfics on home page
+            renderFanfics('home');
+        }
+
+        // Save to localStorage
+        function saveToStorage() {
+            localStorage.setItem('shadowSlaveUsers', JSON.stringify(state.users));
+            localStorage.setItem('shadowSlaveFanfics', JSON.stringify(state.fanfics));
+            localStorage.setItem('shadowSlaveNextId', state.nextFanficId.toString());
+            if (state.currentUser) {
+                localStorage.setItem('shadowSlaveCurrentUser', JSON.stringify(state.currentUser));
+            } else {
+                localStorage.removeItem('shadowSlaveCurrentUser');
+            }
+        }
+
+        // Update user UI
+        function updateUserUI() {
+            if (state.currentUser) {
+                userInfo.classList.add('active');
+                usernameDisplay.textContent = state.currentUser.username;
+                loginBtn.style.display = 'none';
+                signupBtn.style.display = 'none';
+            } else {
+                userInfo.classList.remove('active');
+                loginBtn.style.display = 'block';
+                signupBtn.style.display = 'block';
+            }
+        }
+
+        // Navigate to page
+        function navigateTo(page) {
+            // Update active nav link
+            navLinks.forEach(link => {
+                if (link.getAttribute('data-page') === page) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            // Hide all page sections
+            pageSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show target page
+            state.currentPage = page;
+            
+            if (page === 'home') {
+                document.getElementById('home-page').classList.add('active');
+                document.getElementById('home-content').classList.add('active');
+                renderFanfics('home');
+            } else if (page === 'library') {
+                document.getElementById('library-page').classList.add('active');
+                renderFanfics('library');
+            } else if (page === 'my-fics') {
+                document.getElementById('my-fics-page').classList.add('active');
+                renderMyFics();
+            } else if (page === 'add-fanfic') {
+                document.getElementById('add-fanfic-page').classList.add('active');
+                if (!state.currentUser) {
+                    alert('Please log in to create a fan fiction.');
+                    navigateTo('home');
+                    loginModal.classList.add('active');
+                    return;
+                }
+            } else if (page === 'reader') {
+                document.getElementById('reader-page').classList.add('active');
+            }
+        }
+
+        // Render fanfics
+        function renderFanfics(page) {
+            const container = page === 'home' ? fanficsContainer : libraryContainer;
+            
+            if (state.fanfics.length === 0) {
+                // Show empty state
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h3>No Fan Fictions Yet</h3>
+                        <p>Be the first to write a Shadow Slave fan fiction! Share your story with the community.</p>
+                        <button class="btn btn-primary" id="addFirstFanfic${page === 'home' ? 'Home' : 'Library'}Btn">Write Your First Story</button>
+                    </div>
+                `;
+                
+                // Re-add event listener for the button
+                const buttonId = page === 'home' ? 'addFirstFanficHomeBtn' : 'addFirstFanficLibraryBtn';
+                document.getElementById(buttonId)?.addEventListener('click', () => {
+                    if (!state.currentUser) {
+                        alert('Please log in to create a fan fiction.');
+                        loginModal.classList.add('active');
+                    } else {
+                        navigateTo('add-fanfic');
+                    }
+                });
+                return;
+            }
+            
+            // Clear container
+            container.innerHTML = '';
+            
+            // Add fanfic cards
+            state.fanfics.forEach(fanfic => {
                 const fanficCard = document.createElement('div');
                 fanficCard.className = 'fanfic-card';
+                fanficCard.dataset.id = fanfic.id;
                 
                 fanficCard.innerHTML = `
                     <div class="fanfic-image">
@@ -704,102 +1173,426 @@
                         <p class="fanfic-summary">${fanfic.summary}</p>
                         <div class="fanfic-meta">
                             <div>
-                                <i class="fas fa-layer-group"></i> ${fanfic.chapters} chapters
+                                <i class="fas fa-layer-group"></i> ${fanfic.chapters.length} chapter${fanfic.chapters.length !== 1 ? 's' : ''}
                             </div>
                             <div>
-                                <span class="status ${fanfic.status}">${statusText[fanfic.status]}</span>
+                                <span class="status">${statusText[fanfic.status]}</span>
                             </div>
                         </div>
                     </div>
                 `;
                 
-                fanficsContainer.appendChild(fanficCard);
+                // Add click event to read fanfic
+                fanficCard.addEventListener('click', () => {
+                    openReader(fanfic.id);
+                });
+                
+                container.appendChild(fanficCard);
             });
         }
 
-        // Filter functionality
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove active class from all buttons
-                filterButtons.forEach(btn => btn.classList.remove('active'));
+        // Render my fanfics
+        function renderMyFics() {
+            if (!state.currentUser) {
+                myFicsList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </div>
+                        <h3>Not Logged In</h3>
+                        <p>Please log in to view and manage your fan fictions.</p>
+                        <button class="btn btn-primary" id="loginFromMyFics">Log In</button>
+                    </div>
+                `;
                 
-                // Add active class to clicked button
-                button.classList.add('active');
-                
-                // Get filter value
-                const filter = button.getAttribute('data-filter');
-                
-                // Render filtered fanfics
-                renderFanfics(filter);
-            });
-        });
-
-        // Show add fanfic form
-        addFanficBtn.addEventListener('click', () => {
-            addFanficForm.classList.add('active');
-            window.scrollTo({
-                top: addFanficForm.offsetTop - 100,
-                behavior: 'smooth'
-            });
-        });
-
-        // Hide add fanfic form
-        cancelBtn.addEventListener('click', () => {
-            addFanficForm.classList.remove('active');
-            fanficForm.reset();
-        });
-
-        // Form submission
-        fanficForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+                document.getElementById('loginFromMyFics')?.addEventListener('click', () => {
+                    loginModal.classList.add('active');
+                });
+                return;
+            }
             
-            // Get form values
-            const title = document.getElementById('title').value;
-            const author = document.getElementById('author').value;
-            const summary = document.getElementById('summary').value;
-            const category = document.getElementById('category').value;
-            const status = document.getElementById('status').value;
-            const chapters = parseInt(document.getElementById('chapters').value);
+            const myFanfics = state.fanfics.filter(fanfic => fanfic.authorId === state.currentUser.id);
             
-            // Create new fanfic object
+            if (myFanfics.length === 0) {
+                myFicsList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-feather"></i>
+                        </div>
+                        <h3>No Stories Yet</h3>
+                        <p>You haven't created any fan fictions yet. Start writing your first Shadow Slave story!</p>
+                        <button class="btn btn-primary" id="addFanficFromMyFics">Start Writing</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Clear container
+            myFicsList.innerHTML = '';
+            
+            // Add fanfic cards with edit options
+            myFanfics.forEach(fanfic => {
+                const fanficCard = document.createElement('div');
+                fanficCard.className = 'fanfic-card';
+                fanficCard.dataset.id = fanfic.id;
+                
+                fanficCard.innerHTML = `
+                    <div class="fanfic-image">
+                        <i class="${categoryIcons[fanfic.category]}"></i>
+                    </div>
+                    <div class="fanfic-content">
+                        <h3 class="fanfic-title">${fanfic.title}</h3>
+                        <div class="fanfic-author">
+                            <i class="fas fa-user-pen"></i> ${fanfic.author}
+                        </div>
+                        <p class="fanfic-summary">${fanfic.summary}</p>
+                        <div class="fanfic-meta">
+                            <div>
+                                <i class="fas fa-layer-group"></i> ${fanfic.chapters.length} chapter${fanfic.chapters.length !== 1 ? 's' : ''}
+                            </div>
+                            <div>
+                                <span class="status">${statusText[fanfic.status]}</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 15px; display: flex; gap: 10px;">
+                            <button class="btn btn-outline btn-small read-btn">Read</button>
+                            <button class="btn btn-outline btn-small add-chapter-btn">Add Chapter</button>
+                        </div>
+                    </div>
+                `;
+                
+                // Add click event to read fanfic
+                fanficCard.querySelector('.read-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openReader(fanfic.id);
+                });
+                
+                // Add click event to add chapter
+                fanficCard.querySelector('.add-chapter-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    state.currentFanfic = fanfic;
+                    addChapterForm.classList.add('active');
+                    addChapterForm.scrollIntoView({ behavior: 'smooth' });
+                });
+                
+                // Card click still opens reader
+                fanficCard.addEventListener('click', () => {
+                    openReader(fanfic.id);
+                });
+                
+                myFicsList.appendChild(fanficCard);
+            });
+        }
+
+        // Open reader
+        function openReader(fanficId) {
+            const fanfic = state.fanfics.find(f => f.id === fanficId);
+            if (!fanfic) return;
+            
+            state.currentFanfic = fanfic;
+            state.currentChapter = 1;
+            
+            // Update reader UI
+            readerTitle.textContent = fanfic.title;
+            readerAuthor.textContent = `by ${fanfic.author}`;
+            
+            // Populate chapter select
+            chapterSelect.innerHTML = '';
+            fanfic.chapters.forEach((chapter, index) => {
+                const option = document.createElement('option');
+                option.value = index + 1;
+                option.textContent = `Chapter ${index + 1}: ${chapter.title}`;
+                chapterSelect.appendChild(option);
+            });
+            
+            // Load first chapter
+            loadChapter(1);
+            
+            // Navigate to reader
+            navigateTo('reader');
+        }
+
+        // Load chapter
+        function loadChapter(chapterNumber) {
+            if (!state.currentFanfic || chapterNumber < 1 || chapterNumber > state.currentFanfic.chapters.length) {
+                return;
+            }
+            
+            state.currentChapter = chapterNumber;
+            const chapter = state.currentFanfic.chapters[chapterNumber - 1];
+            
+            // Update UI
+            chapterSelect.value = chapterNumber;
+            chapterContent.innerHTML = `<h3>${chapter.title}</h3>` + chapter.content;
+            
+            // Update button states
+            prevChapter.disabled = chapterNumber === 1;
+            nextChapter.disabled = chapterNumber === state.currentFanfic.chapters.length;
+        }
+
+        // Add new fanfic
+        function addFanfic(title, summary, category, status, firstChapterTitle, firstChapterContent) {
             const newFanfic = {
-                id: fanfics.length + 1,
+                id: state.nextFanficId++,
                 title,
-                author,
+                author: state.currentUser.username,
+                authorId: state.currentUser.id,
                 summary,
                 category,
                 status,
-                chapters,
-                wordCount: "0k",
-                date: new Date().toISOString().split('T')[0]
+                date: new Date().toISOString().split('T')[0],
+                chapters: [
+                    {
+                        chapterNumber: 1,
+                        title: firstChapterTitle,
+                        content: firstChapterContent
+                    }
+                ]
             };
             
-            // Add to fanfics array
-            fanfics.unshift(newFanfic);
+            state.fanfics.unshift(newFanfic);
+            saveToStorage();
             
-            // Reset form and hide it
-            fanficForm.reset();
-            addFanficForm.classList.remove('active');
-            
-            // Re-render fanfics
-            const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
-            renderFanfics(activeFilter);
+            // Navigate back to home
+            navigateTo('home');
             
             // Show success message
-            alert('Your fan fiction has been submitted successfully! It will appear in the library after moderation.');
-        });
+            alert('Your fan fiction has been published successfully!');
+        }
 
-        // Login/Signup button functionality (simulated)
-        loginBtn.addEventListener('click', () => {
-            alert('Login functionality would be implemented here. For this demo, you can submit fan fictions without logging in.');
-        });
+        // Add chapter to existing fanfic
+        function addChapterToFanfic(fanficId, chapterTitle, chapterContent) {
+            const fanfic = state.fanfics.find(f => f.id === fanficId);
+            if (!fanfic) return;
+            
+            const newChapter = {
+                chapterNumber: fanfic.chapters.length + 1,
+                title: chapterTitle,
+                content: chapterContent
+            };
+            
+            fanfic.chapters.push(newChapter);
+            saveToStorage();
+            
+            // Hide form and refresh
+            addChapterForm.classList.remove('active');
+            renderMyFics();
+            
+            // Show success message
+            alert('Chapter added successfully!');
+        }
 
-        signupBtn.addEventListener('click', () => {
-            alert('Sign up functionality would be implemented here. For this demo, you can submit fan fictions without an account.');
-        });
+        // Event Listeners
 
-        // Initialize the page
-        renderFanfics();
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeFromStorage();
+            
+            // Home button
+            homeBtn.addEventListener('click', () => navigateTo('home'));
+            
+            // Navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navigateTo(link.getAttribute('data-page'));
+                });
+            });
+            
+            // User actions
+            loginBtn.addEventListener('click', () => loginModal.classList.add('active'));
+            signupBtn.addEventListener('click', () => signupModal.classList.add('active'));
+            logoutBtn.addEventListener('click', () => {
+                state.currentUser = null;
+                updateUserUI();
+                saveToStorage();
+                navigateTo('home');
+            });
+            
+            // Modal controls
+            closeLogin.addEventListener('click', () => loginModal.classList.remove('active'));
+            closeSignup.addEventListener('click', () => signupModal.classList.remove('active'));
+            switchToSignup.addEventListener('click', () => {
+                loginModal.classList.remove('active');
+                signupModal.classList.add('active');
+            });
+            switchToLogin.addEventListener('click', () => {
+                signupModal.classList.remove('active');
+                loginModal.classList.add('active');
+            });
+            
+            // Login form
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                // Find user
+                const user = state.users.find(u => u.username === username && u.password === password);
+                
+                if (user) {
+                    state.currentUser = user;
+                    updateUserUI();
+                    saveToStorage();
+                    loginModal.classList.remove('active');
+                    loginForm.reset();
+                    
+                    // Navigate based on current page
+                    if (state.currentPage === 'my-fics') {
+                        renderMyFics();
+                    }
+                    
+                    alert(`Welcome back, ${username}!`);
+                } else {
+                    alert('Invalid username or password.');
+                }
+            });
+            
+            // Signup form
+            signupForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const username = document.getElementById('signupUsername').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                // Validate
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match.');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    alert('Password must be at least 6 characters.');
+                    return;
+                }
+                
+                // Check if username exists
+                if (state.users.some(u => u.username === username)) {
+                    alert('Username already exists.');
+                    return;
+                }
+                
+                // Create new user
+                const newUser = {
+                    id: Date.now().toString(),
+                    username,
+                    email,
+                    password
+                };
+                
+                state.users.push(newUser);
+                state.currentUser = newUser;
+                updateUserUI();
+                saveToStorage();
+                signupModal.classList.remove('active');
+                signupForm.reset();
+                
+                alert(`Account created successfully! Welcome, ${username}.`);
+            });
+            
+            // Add fanfic buttons
+            addFanficBtn.addEventListener('click', () => {
+                if (!state.currentUser) {
+                    alert('Please log in to create a fan fiction.');
+                    loginModal.classList.add('active');
+                } else {
+                    navigateTo('add-fanfic');
+                }
+            });
+            
+            addFanficFooter.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (!state.currentUser) {
+                    alert('Please log in to create a fan fiction.');
+                    loginModal.classList.add('active');
+                } else {
+                    navigateTo('add-fanfic');
+                }
+            });
+            
+            // Fanfic form
+            fanficForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!state.currentUser) {
+                    alert('Please log in to create a fan fiction.');
+                    loginModal.classList.add('active');
+                    return;
+                }
+                
+                const title = document.getElementById('title').value;
+                const summary = document.getElementById('summary').value;
+                const category = document.getElementById('category').value;
+                const status = document.getElementById('status').value;
+                const firstChapterTitle = document.getElementById('firstChapterTitle').value;
+                const firstChapter = document.getElementById('firstChapter').value;
+                
+                addFanfic(title, summary, category, status, firstChapterTitle, firstChapter);
+                fanficForm.reset();
+            });
+            
+            closeAddFanfic.addEventListener('click', () => navigateTo('home'));
+            cancelBtn.addEventListener('click', () => navigateTo('home'));
+            
+            // Reader controls
+            backToLibrary.addEventListener('click', () => navigateTo('library'));
+            chapterSelect.addEventListener('change', () => loadChapter(parseInt(chapterSelect.value)));
+            prevChapter.addEventListener('click', () => loadChapter(state.currentChapter - 1));
+            nextChapter.addEventListener('click', () => loadChapter(state.currentChapter + 1));
+            
+            // Chapter form
+            chapterForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const chapterTitle = document.getElementById('chapterTitle').value;
+                const chapterContentText = document.getElementById('chapterContent').value;
+                
+                if (!state.currentFanfic) return;
+                
+                addChapterToFanfic(state.currentFanfic.id, chapterTitle, chapterContentText);
+                chapterForm.reset();
+            });
+            
+            cancelChapterBtn.addEventListener('click', () => {
+                addChapterForm.classList.remove('active');
+                chapterForm.reset();
+            });
+            
+            // Filter buttons (event delegation)
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-btn')) {
+                    // Remove active class from all filter buttons
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    e.target.classList.add('active');
+                    
+                    // Get filter value
+                    const filter = e.target.getAttribute('data-filter');
+                    
+                    // Filter logic would go here
+                    // For now, just show all
+                    renderFanfics(state.currentPage === 'home' ? 'home' : 'library');
+                }
+            });
+            
+            // Community links
+            document.getElementById('communityGuidelines')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('Community Guidelines:\n\n1. Be respectful to other authors and readers\n2. Keep content appropriate (no explicit material)\n3. Credit inspiration when applicable\n4. No plagiarism\n5. Have fun and be creative!');
+            });
+            
+            document.getElementById('aboutUs')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('About Shadow Slave Fan Fiction Hub:\n\nThis is a fan-made website created for Shadow Slave fans to share their stories. All rights to Shadow Slave belong to Guiltythree.\n\nThis site is not affiliated with the author or official publishers.');
+            });
+            
+            document.getElementById('reportIssue')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('To report an issue, please email: shadow-slave-fanfic@example.com\n\nInclude details about the issue and steps to reproduce if possible.');
+            });
+        });
     </script>
 </body>
 </html>
