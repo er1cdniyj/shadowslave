@@ -16,7 +16,7 @@
             --accent-secondary: #7b2cbf;
             --text-primary: #f0f0f0;
             --text-secondary: #b0b0c0;
-            --border-color: #2a2a2a;
+            --border-color: #2a2a3a;
             --shadow-color: rgba(157, 78, 221, 0.2);
         }
         
@@ -375,7 +375,7 @@
             padding-top: 15px;
         }
         
-        /* Reader Page */
+        /* Reader Page - FIXED TEXT VISIBILITY */
         .reader-header {
             display: flex;
             justify-content: space-between;
@@ -421,11 +421,28 @@
             line-height: 1.8;
             font-size: 1.1rem;
             min-height: 400px;
+            color: var(--text-primary) !important; /* FORCE TEXT COLOR */
         }
         
         .chapter-text {
             white-space: pre-wrap;
             font-family: 'Lato', sans-serif;
+            color: var(--text-primary) !important;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .chapter-text p {
+            margin-bottom: 24px;
+            color: var(--text-primary) !important;
+        }
+        
+        .chapter-content h3 {
+            color: var(--accent-color) !important;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            font-family: 'Cinzel', serif;
         }
         
         /* Add Fanfic Form */
@@ -629,9 +646,25 @@
                 align-items: flex-start;
             }
         }
+        
+        /* TEST OVERLAY - Will help us see if content is there */
+        #test-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 0, 0, 0.1);
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <!-- Test Overlay -->
+    <div id="test-overlay"></div>
+    
     <!-- Header -->
     <header>
         <div class="container">
@@ -859,7 +892,13 @@
             </div>
             
             <div class="chapter-content" id="chapterContent">
-                <!-- Chapter content will be loaded here -->
+                <!-- TEST CONTENT - Will show if loading works -->
+                <h3>Test Chapter Title</h3>
+                <div class="chapter-text">
+                    <p>This is a test paragraph to check if text is visible.</p>
+                    <p>If you can see this text, then the styling is working.</p>
+                    <p>If you cannot see this, there's a serious display issue.</p>
+                </div>
             </div>
         </div>
         
@@ -1024,14 +1063,18 @@
         const addChapterForm = document.getElementById('addChapterForm');
         const chapterForm = document.getElementById('chapterForm');
         const cancelChapterBtn = document.getElementById('cancelChapterBtn');
+        const testOverlay = document.getElementById('test-overlay');
 
         // Initialize from localStorage
         function initializeFromStorage() {
+            console.log('Initializing from localStorage...');
+            
             // Load users from localStorage
             const storedUsers = localStorage.getItem('shadowSlaveUsers');
             if (storedUsers) {
                 try {
                     state.users = JSON.parse(storedUsers);
+                    console.log('Loaded users:', state.users.length);
                 } catch (e) {
                     console.error('Error parsing users:', e);
                     state.users = [];
@@ -1043,11 +1086,13 @@
             if (storedFanfics) {
                 try {
                     state.fanfics = JSON.parse(storedFanfics);
+                    console.log('Loaded fanfics:', state.fanfics.length);
                     // Ensure chapters exist for each fanfic
                     state.fanfics.forEach(fanfic => {
                         if (!fanfic.chapters || !Array.isArray(fanfic.chapters)) {
                             fanfic.chapters = [];
                         }
+                        console.log(`Fanfic "${fanfic.title}" has ${fanfic.chapters.length} chapters`);
                     });
                 } catch (e) {
                     console.error('Error parsing fanfics:', e);
@@ -1067,6 +1112,7 @@
                 try {
                     state.currentUser = JSON.parse(currentUser);
                     updateUserUI();
+                    console.log('User logged in:', state.currentUser.username);
                 } catch (e) {
                     console.error('Error parsing current user:', e);
                 }
@@ -1075,7 +1121,7 @@
             // Render fanfics on home page
             renderFanfics('home');
             
-            console.log('Initialized with', state.fanfics.length, 'fanfics');
+            console.log('Initialization complete');
         }
 
         // Save to localStorage
@@ -1111,6 +1157,8 @@
 
         // Navigate to page
         function navigateTo(page) {
+            console.log('Navigating to:', page);
+            
             // Update active nav link
             navLinks.forEach(link => {
                 if (link.getAttribute('data-page') === page) {
@@ -1218,6 +1266,7 @@
                 
                 // Add click event to read fanfic
                 fanficCard.addEventListener('click', () => {
+                    console.log('Clicked fanfic:', fanfic.title, 'ID:', fanfic.id);
                     openReader(fanfic.id);
                 });
                 
@@ -1305,6 +1354,7 @@
                 if (readBtn) {
                     readBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
+                        console.log('Read button clicked for:', fanfic.title);
                         openReader(fanfic.id);
                     });
                 }
@@ -1331,7 +1381,9 @@
 
         // Open reader
         function openReader(fanficId) {
-            console.log('Opening reader for fanfic ID:', fanficId);
+            console.log('=== OPENING READER ===');
+            console.log('Fanfic ID:', fanficId);
+            
             const fanfic = state.fanfics.find(f => f.id === fanficId);
             if (!fanfic) {
                 console.error('Fanfic not found with ID:', fanficId);
@@ -1340,6 +1392,8 @@
             }
             
             console.log('Found fanfic:', fanfic);
+            console.log('Chapters:', fanfic.chapters);
+            console.log('Chapter count:', fanfic.chapters ? fanfic.chapters.length : 0);
             
             state.currentFanfic = fanfic;
             state.currentChapter = 1;
@@ -1370,27 +1424,35 @@
             
             // Navigate to reader
             navigateTo('reader');
+            
+            // Show test overlay to help debug
+            testOverlay.style.display = 'block';
+            setTimeout(() => {
+                testOverlay.style.display = 'none';
+            }, 1000);
         }
 
-        // Load chapter
+        // Load chapter - SIMPLIFIED AND FIXED
         function loadChapter(chapterNumber) {
-            console.log('Loading chapter:', chapterNumber, 'for fanfic:', state.currentFanfic);
+            console.log('=== LOADING CHAPTER ===');
+            console.log('Chapter number:', chapterNumber);
+            console.log('Current fanfic:', state.currentFanfic);
             
             if (!state.currentFanfic) {
                 console.error('No current fanfic selected');
-                chapterContent.innerHTML = '<p>No story selected.</p>';
+                chapterContent.innerHTML = '<h3>No Story Selected</h3><p>Please select a story to read.</p>';
                 return;
             }
             
             if (!state.currentFanfic.chapters || state.currentFanfic.chapters.length === 0) {
                 console.error('No chapters in this fanfic');
-                chapterContent.innerHTML = '<p>This story has no chapters yet.</p>';
+                chapterContent.innerHTML = '<h3>No Chapters</h3><p>This story has no chapters yet.</p>';
                 return;
             }
             
             if (chapterNumber < 1 || chapterNumber > state.currentFanfic.chapters.length) {
                 console.error('Chapter number out of range:', chapterNumber);
-                chapterContent.innerHTML = '<p>Chapter not found.</p>';
+                chapterContent.innerHTML = '<h3>Chapter Not Found</h3><p>The requested chapter does not exist.</p>';
                 return;
             }
             
@@ -1398,35 +1460,40 @@
             const chapter = state.currentFanfic.chapters[chapterNumber - 1];
             
             console.log('Chapter to load:', chapter);
+            console.log('Chapter title:', chapter.title);
+            console.log('Chapter content:', chapter.content ? 'Content exists (' + chapter.content.length + ' chars)' : 'No content');
             
             // Update UI
             chapterSelect.value = chapterNumber;
             
-            // Format the content properly
-            let formattedContent = `<h3 style="margin-bottom: 30px; color: var(--accent-color); border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">${chapter.title || 'Untitled Chapter'}</h3>`;
+            // SIMPLE DISPLAY - This should definitely work
+            let html = `<h3>${chapter.title || 'Untitled Chapter'}</h3>`;
             
-            // Add chapter content
             if (chapter.content && chapter.content.trim()) {
-                // Preserve line breaks and paragraphs
-                const contentWithParagraphs = chapter.content
-                    .split('\n\n')
-                    .map(paragraph => `<p style="margin-bottom: 20px;">${paragraph.replace(/\n/g, '<br>')}</p>`)
-                    .join('');
-                
-                formattedContent += `<div class="chapter-text">${contentWithParagraphs}</div>`;
+                // Just show the content as-is with line breaks
+                html += `<div class="chapter-text">${chapter.content.replace(/\n/g, '<br>')}</div>`;
             } else {
-                formattedContent += '<p>No content available for this chapter.</p>';
+                html += '<p>No content available for this chapter.</p>';
             }
             
-            chapterContent.innerHTML = formattedContent;
+            chapterContent.innerHTML = html;
+            console.log('Set chapter content HTML:', html);
             
             // Update button states
             prevChapter.disabled = chapterNumber === 1;
             nextChapter.disabled = chapterNumber === state.currentFanfic.chapters.length;
+            
+            // Force redraw
+            chapterContent.style.display = 'none';
+            setTimeout(() => {
+                chapterContent.style.display = 'block';
+            }, 10);
         }
 
         // Add new fanfic
         function addFanfic(title, summary, category, status, firstChapterTitle, firstChapterContent) {
+            console.log('Adding new fanfic...');
+            
             if (!firstChapterContent.trim()) {
                 alert('Please write some content for your first chapter!');
                 return;
@@ -1450,7 +1517,7 @@
                 ]
             };
             
-            console.log('Adding new fanfic:', newFanfic);
+            console.log('New fanfic created:', newFanfic);
             
             state.fanfics.unshift(newFanfic);
             saveToStorage();
@@ -1498,6 +1565,11 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, initializing...');
+            
+            // Clear localStorage for fresh start (optional)
+            // localStorage.clear();
+            
             initializeFromStorage();
             
             // Home button
@@ -1706,36 +1778,74 @@
                 alert('To report an issue, please email: shadow-slave-fanfic@example.com\n\nInclude details about the issue and steps to reproduce if possible.');
             });
             
-            // Add debug test button
-            const debugBtn = document.createElement('button');
-            debugBtn.textContent = 'Debug';
-            debugBtn.style.position = 'fixed';
-            debugBtn.style.bottom = '10px';
-            debugBtn.style.right = '10px';
-            debugBtn.style.zIndex = '9999';
-            debugBtn.style.padding = '8px 12px';
-            debugBtn.style.fontSize = '12px';
-            debugBtn.style.backgroundColor = '#ff4444';
-            debugBtn.style.color = 'white';
-            debugBtn.style.border = 'none';
-            debugBtn.style.borderRadius = '4px';
-            debugBtn.style.cursor = 'pointer';
-            document.body.appendChild(debugBtn);
+            // Add emergency test button
+            const emergencyTestBtn = document.createElement('button');
+            emergencyTestBtn.textContent = 'TEST READER';
+            emergencyTestBtn.style.position = 'fixed';
+            emergencyTestBtn.style.bottom = '50px';
+            emergencyTestBtn.style.right = '10px';
+            emergencyTestBtn.style.zIndex = '9999';
+            emergencyTestBtn.style.padding = '10px 15px';
+            emergencyTestBtn.style.fontSize = '14px';
+            emergencyTestBtn.style.backgroundColor = '#00ff00';
+            emergencyTestBtn.style.color = 'black';
+            emergencyTestBtn.style.border = 'none';
+            emergencyTestBtn.style.borderRadius = '4px';
+            emergencyTestBtn.style.cursor = 'pointer';
+            emergencyTestBtn.style.fontWeight = 'bold';
+            document.body.appendChild(emergencyTestBtn);
             
-            debugBtn.addEventListener('click', () => {
-                console.log('=== DEBUG INFO ===');
-                console.log('Current user:', state.currentUser);
-                console.log('All fanfics:', state.fanfics);
-                console.log('Current fanfic:', state.currentFanfic);
-                console.log('LocalStorage users:', localStorage.getItem('shadowSlaveUsers'));
-                console.log('LocalStorage fanfics:', localStorage.getItem('shadowSlaveFanfics'));
+            emergencyTestBtn.addEventListener('click', () => {
+                console.log('=== EMERGENCY TEST ===');
                 
-                if (state.fanfics.length > 0) {
-                    console.log('First fanfic details:', state.fanfics[0]);
-                    console.log('First fanfic chapters:', state.fanfics[0].chapters);
-                }
+                // Create a test fanfic
+                const testFanfic = {
+                    id: 999,
+                    title: "EMERGENCY TEST STORY",
+                    author: "Test Author",
+                    authorId: "test",
+                    summary: "This is a test story to check if reader works",
+                    category: "sunny",
+                    status: "ongoing",
+                    date: new Date().toISOString().split('T')[0],
+                    chapters: [
+                        {
+                            chapterNumber: 1,
+                            title: "Test Chapter 1",
+                            content: "THIS IS A TEST. If you can see this text, the reader is working!\n\nThis is paragraph two of the test.\n\nAnd this is paragraph three. The text should be visible and readable."
+                        }
+                    ]
+                };
                 
-                alert('Debug info logged to console (F12 to view)');
+                // Add to state and open reader
+                state.currentFanfic = testFanfic;
+                state.currentChapter = 1;
+                
+                // Update reader UI
+                readerTitle.textContent = testFanfic.title;
+                readerAuthor.textContent = `by ${testFanfic.author}`;
+                
+                // Populate chapter select
+                chapterSelect.innerHTML = '';
+                const option = document.createElement('option');
+                option.value = 1;
+                option.textContent = `Chapter 1: ${testFanfic.chapters[0].title}`;
+                chapterSelect.appendChild(option);
+                
+                // Load chapter
+                const chapter = testFanfic.chapters[0];
+                let html = `<h3 style="color: red !important;">${chapter.title}</h3>`;
+                html += `<div class="chapter-text" style="color: white !important; font-size: 20px !important; background-color: rgba(255,0,0,0.1); padding: 20px; border: 2px solid red;">`;
+                html += `<p><strong>TEST TEXT:</strong> ${chapter.content.replace(/\n/g, '<br>')}</p>`;
+                html += `<p><strong>If you can see this, the reader works!</strong></p>`;
+                html += `</div>`;
+                
+                chapterContent.innerHTML = html;
+                
+                // Navigate to reader
+                navigateTo('reader');
+                
+                alert('Test story loaded. You should see RED TEST TEXT in the reader.');
             });
         });
     </script>
