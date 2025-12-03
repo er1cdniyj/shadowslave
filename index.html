@@ -375,7 +375,7 @@
             padding-top: 15px;
         }
         
-        /* Reader Page - FIXED TEXT VISIBILITY */
+        /* Reader Page - FIXED */
         .reader-header {
             display: flex;
             justify-content: space-between;
@@ -421,24 +421,25 @@
             line-height: 1.8;
             font-size: 1.1rem;
             min-height: 400px;
-            color: var(--text-primary) !important; /* FORCE TEXT COLOR */
+            color: var(--text-primary);
         }
         
         .chapter-text {
             white-space: pre-wrap;
             font-family: 'Lato', sans-serif;
-            color: var(--text-primary) !important;
+            color: var(--text-primary);
             font-size: 1.1rem;
             line-height: 1.8;
+            margin-top: 20px;
         }
         
         .chapter-text p {
             margin-bottom: 24px;
-            color: var(--text-primary) !important;
+            color: var(--text-primary);
         }
         
         .chapter-content h3 {
-            color: var(--accent-color) !important;
+            color: var(--accent-color);
             margin-bottom: 30px;
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 15px;
@@ -646,25 +647,9 @@
                 align-items: flex-start;
             }
         }
-        
-        /* TEST OVERLAY - Will help us see if content is there */
-        #test-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 0, 0, 0.1);
-            pointer-events: none;
-            z-index: 9999;
-            display: none;
-        }
     </style>
 </head>
 <body>
-    <!-- Test Overlay -->
-    <div id="test-overlay"></div>
-    
     <!-- Header -->
     <header>
         <div class="container">
@@ -892,13 +877,8 @@
             </div>
             
             <div class="chapter-content" id="chapterContent">
-                <!-- TEST CONTENT - Will show if loading works -->
-                <h3>Test Chapter Title</h3>
-                <div class="chapter-text">
-                    <p>This is a test paragraph to check if text is visible.</p>
-                    <p>If you can see this text, then the styling is working.</p>
-                    <p>If you cannot see this, there's a serious display issue.</p>
-                </div>
+                <!-- Content will be loaded here -->
+                <p style="color: var(--text-secondary); font-style: italic;">Select a chapter to start reading...</p>
             </div>
         </div>
         
@@ -1063,7 +1043,6 @@
         const addChapterForm = document.getElementById('addChapterForm');
         const chapterForm = document.getElementById('chapterForm');
         const cancelChapterBtn = document.getElementById('cancelChapterBtn');
-        const testOverlay = document.getElementById('test-overlay');
 
         // Initialize from localStorage
         function initializeFromStorage() {
@@ -1424,12 +1403,6 @@
             
             // Navigate to reader
             navigateTo('reader');
-            
-            // Show test overlay to help debug
-            testOverlay.style.display = 'block';
-            setTimeout(() => {
-                testOverlay.style.display = 'none';
-            }, 1000);
         }
 
         // Load chapter - SIMPLIFIED AND FIXED
@@ -1470,24 +1443,23 @@
             let html = `<h3>${chapter.title || 'Untitled Chapter'}</h3>`;
             
             if (chapter.content && chapter.content.trim()) {
-                // Just show the content as-is with line breaks
-                html += `<div class="chapter-text">${chapter.content.replace(/\n/g, '<br>')}</div>`;
+                // Split by newlines and create paragraphs
+                const paragraphs = chapter.content.split('\n').filter(p => p.trim() !== '');
+                html += '<div class="chapter-text">';
+                paragraphs.forEach(paragraph => {
+                    html += `<p>${paragraph}</p>`;
+                });
+                html += '</div>';
             } else {
                 html += '<p>No content available for this chapter.</p>';
             }
             
             chapterContent.innerHTML = html;
-            console.log('Set chapter content HTML:', html);
+            console.log('Set chapter content HTML');
             
             // Update button states
             prevChapter.disabled = chapterNumber === 1;
             nextChapter.disabled = chapterNumber === state.currentFanfic.chapters.length;
-            
-            // Force redraw
-            chapterContent.style.display = 'none';
-            setTimeout(() => {
-                chapterContent.style.display = 'block';
-            }, 10);
         }
 
         // Add new fanfic
@@ -1566,9 +1538,6 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM loaded, initializing...');
-            
-            // Clear localStorage for fresh start (optional)
-            // localStorage.clear();
             
             initializeFromStorage();
             
@@ -1776,76 +1745,6 @@
             document.getElementById('reportIssue')?.addEventListener('click', (e) => {
                 e.preventDefault();
                 alert('To report an issue, please email: shadow-slave-fanfic@example.com\n\nInclude details about the issue and steps to reproduce if possible.');
-            });
-            
-            // Add emergency test button
-            const emergencyTestBtn = document.createElement('button');
-            emergencyTestBtn.textContent = 'TEST READER';
-            emergencyTestBtn.style.position = 'fixed';
-            emergencyTestBtn.style.bottom = '50px';
-            emergencyTestBtn.style.right = '10px';
-            emergencyTestBtn.style.zIndex = '9999';
-            emergencyTestBtn.style.padding = '10px 15px';
-            emergencyTestBtn.style.fontSize = '14px';
-            emergencyTestBtn.style.backgroundColor = '#00ff00';
-            emergencyTestBtn.style.color = 'black';
-            emergencyTestBtn.style.border = 'none';
-            emergencyTestBtn.style.borderRadius = '4px';
-            emergencyTestBtn.style.cursor = 'pointer';
-            emergencyTestBtn.style.fontWeight = 'bold';
-            document.body.appendChild(emergencyTestBtn);
-            
-            emergencyTestBtn.addEventListener('click', () => {
-                console.log('=== EMERGENCY TEST ===');
-                
-                // Create a test fanfic
-                const testFanfic = {
-                    id: 999,
-                    title: "EMERGENCY TEST STORY",
-                    author: "Test Author",
-                    authorId: "test",
-                    summary: "This is a test story to check if reader works",
-                    category: "sunny",
-                    status: "ongoing",
-                    date: new Date().toISOString().split('T')[0],
-                    chapters: [
-                        {
-                            chapterNumber: 1,
-                            title: "Test Chapter 1",
-                            content: "THIS IS A TEST. If you can see this text, the reader is working!\n\nThis is paragraph two of the test.\n\nAnd this is paragraph three. The text should be visible and readable."
-                        }
-                    ]
-                };
-                
-                // Add to state and open reader
-                state.currentFanfic = testFanfic;
-                state.currentChapter = 1;
-                
-                // Update reader UI
-                readerTitle.textContent = testFanfic.title;
-                readerAuthor.textContent = `by ${testFanfic.author}`;
-                
-                // Populate chapter select
-                chapterSelect.innerHTML = '';
-                const option = document.createElement('option');
-                option.value = 1;
-                option.textContent = `Chapter 1: ${testFanfic.chapters[0].title}`;
-                chapterSelect.appendChild(option);
-                
-                // Load chapter
-                const chapter = testFanfic.chapters[0];
-                let html = `<h3 style="color: red !important;">${chapter.title}</h3>`;
-                html += `<div class="chapter-text" style="color: white !important; font-size: 20px !important; background-color: rgba(255,0,0,0.1); padding: 20px; border: 2px solid red;">`;
-                html += `<p><strong>TEST TEXT:</strong> ${chapter.content.replace(/\n/g, '<br>')}</p>`;
-                html += `<p><strong>If you can see this, the reader works!</strong></p>`;
-                html += `</div>`;
-                
-                chapterContent.innerHTML = html;
-                
-                // Navigate to reader
-                navigateTo('reader');
-                
-                alert('Test story loaded. You should see RED TEST TEXT in the reader.');
             });
         });
     </script>
