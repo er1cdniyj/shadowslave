@@ -420,10 +420,14 @@
             border: 1px solid var(--border-color);
             line-height: 1.8;
             font-size: 1.1rem;
-            white-space: pre-wrap;
         }
         
-        .chapter-content p {
+        .chapter-text {
+            white-space: pre-wrap;
+            font-family: 'Lato', sans-serif;
+        }
+        
+        .chapter-text p {
             margin-bottom: 20px;
         }
         
@@ -909,6 +913,7 @@
                     <div class="form-group">
                         <label for="firstChapter">First Chapter Content</label>
                         <textarea id="firstChapter" class="form-control" placeholder="Write the content of your first chapter here..." rows="15" required></textarea>
+                        <small style="color: var(--text-secondary); display: block; margin-top: 5px;">Tip: Write your chapter content above. When you publish, you'll be able to read it immediately!</small>
                     </div>
                     
                     <div class="form-actions">
@@ -1052,6 +1057,10 @@
             
             // Render fanfics on home page
             renderFanfics('home');
+            
+            // Debug: Log current state
+            console.log('Loaded fanfics:', state.fanfics);
+            console.log('Loaded users:', state.users);
         }
 
         // Save to localStorage
@@ -1141,14 +1150,16 @@
                 
                 // Re-add event listener for the button
                 const buttonId = page === 'home' ? 'addFirstFanficHomeBtn' : 'addFirstFanficLibraryBtn';
-                document.getElementById(buttonId)?.addEventListener('click', () => {
-                    if (!state.currentUser) {
-                        alert('Please log in to create a fan fiction.');
-                        loginModal.classList.add('active');
-                    } else {
-                        navigateTo('add-fanfic');
-                    }
-                });
+                setTimeout(() => {
+                    document.getElementById(buttonId)?.addEventListener('click', () => {
+                        if (!state.currentUser) {
+                            alert('Please log in to create a fan fiction.');
+                            loginModal.classList.add('active');
+                        } else {
+                            navigateTo('add-fanfic');
+                        }
+                    });
+                }, 100);
                 return;
             }
             
@@ -1205,9 +1216,11 @@
                     </div>
                 `;
                 
-                document.getElementById('loginFromMyFics')?.addEventListener('click', () => {
-                    loginModal.classList.add('active');
-                });
+                setTimeout(() => {
+                    document.getElementById('loginFromMyFics')?.addEventListener('click', () => {
+                        loginModal.classList.add('active');
+                    });
+                }, 100);
                 return;
             }
             
@@ -1310,11 +1323,16 @@
             
             // Navigate to reader
             navigateTo('reader');
+            
+            console.log('Opening fanfic:', fanfic);
+            console.log('Chapters:', fanfic.chapters);
         }
 
         // Load chapter
         function loadChapter(chapterNumber) {
             if (!state.currentFanfic || chapterNumber < 1 || chapterNumber > state.currentFanfic.chapters.length) {
+                console.error('Cannot load chapter:', chapterNumber, 'for fanfic:', state.currentFanfic);
+                chapterContent.innerHTML = '<p>Chapter not found.</p>';
                 return;
             }
             
@@ -1324,24 +1342,38 @@
             // Update UI
             chapterSelect.value = chapterNumber;
             
-            // Format the content with paragraphs
-            let formattedContent = `<h3 style="margin-bottom: 30px; color: var(--accent-color);">${chapter.title}</h3>`;
+            // Format the content properly
+            let formattedContent = `<h3 style="margin-bottom: 30px; color: var(--accent-color); border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">${chapter.title}</h3>`;
             
-            // Split content by newlines and wrap in paragraphs
-            const paragraphs = chapter.content.split('\n').filter(p => p.trim() !== '');
-            paragraphs.forEach(paragraph => {
-                formattedContent += `<p>${paragraph}</p>`;
-            });
+            // Add chapter content
+            if (chapter.content && chapter.content.trim()) {
+                // Preserve line breaks and paragraphs
+                const contentWithParagraphs = chapter.content
+                    .split('\n\n')
+                    .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>')}</p>`)
+                    .join('');
+                
+                formattedContent += `<div class="chapter-text">${contentWithParagraphs}</div>`;
+            } else {
+                formattedContent += '<p>No content available for this chapter.</p>';
+            }
             
             chapterContent.innerHTML = formattedContent;
             
             // Update button states
             prevChapter.disabled = chapterNumber === 1;
             nextChapter.disabled = chapterNumber === state.currentFanfic.chapters.length;
+            
+            console.log('Loaded chapter:', chapter);
         }
 
         // Add new fanfic
         function addFanfic(title, summary, category, status, firstChapterTitle, firstChapterContent) {
+            if (!firstChapterContent.trim()) {
+                alert('Please write some content for your first chapter!');
+                return;
+            }
+            
             const newFanfic = {
                 id: state.nextFanficId++,
                 title,
@@ -1367,18 +1399,25 @@
             navigateTo('home');
             
             // Show success message
-            alert('Your fan fiction has been published successfully!');
+            alert('Your fan fiction has been published successfully! Click on it to read your story.');
+            
+            console.log('Added new fanfic:', newFanfic);
         }
 
         // Add chapter to existing fanfic
-        function addChapterToFanfic(fanficId, chapterTitle, chapterContent) {
+        function addChapterToFanfic(fanficId, chapterTitle, chapterContentText) {
             const fanfic = state.fanfics.find(f => f.id === fanficId);
             if (!fanfic) return;
+            
+            if (!chapterContentText.trim()) {
+                alert('Please write some content for your chapter!');
+                return;
+            }
             
             const newChapter = {
                 chapterNumber: fanfic.chapters.length + 1,
                 title: chapterTitle,
-                content: chapterContent
+                content: chapterContentText
             };
             
             fanfic.chapters.push(newChapter);
@@ -1390,6 +1429,8 @@
             
             // Show success message
             alert('Chapter added successfully!');
+            
+            console.log('Added chapter to fanfic:', fanficId, newChapter);
         }
 
         // Event Listeners
@@ -1539,6 +1580,7 @@
                 
                 addFanfic(title, summary, category, status, firstChapterTitle, firstChapter);
                 fanficForm.reset();
+                document.getElementById('firstChapterTitle').value = 'Chapter 1';
             });
             
             closeAddFanfic.addEventListener('click', () => navigateTo('home'));
@@ -1601,6 +1643,53 @@
             document.getElementById('reportIssue')?.addEventListener('click', (e) => {
                 e.preventDefault();
                 alert('To report an issue, please email: shadow-slave-fanfic@example.com\n\nInclude details about the issue and steps to reproduce if possible.');
+            });
+            
+            // Add test data button for debugging (hidden)
+            const testBtn = document.createElement('button');
+            testBtn.textContent = 'Add Test Story';
+            testBtn.style.position = 'fixed';
+            testBtn.style.bottom = '10px';
+            testBtn.style.right = '10px';
+            testBtn.style.zIndex = '9999';
+            testBtn.style.padding = '5px 10px';
+            testBtn.style.fontSize = '12px';
+            testBtn.style.backgroundColor = 'var(--accent-color)';
+            testBtn.style.color = 'white';
+            testBtn.style.border = 'none';
+            testBtn.style.borderRadius = '4px';
+            testBtn.style.cursor = 'pointer';
+            testBtn.style.display = 'none'; // Hidden by default
+            document.body.appendChild(testBtn);
+            
+            testBtn.addEventListener('click', () => {
+                if (!state.currentUser) {
+                    alert('Please log in first.');
+                    return;
+                }
+                
+                const testFanfic = {
+                    id: state.nextFanficId++,
+                    title: "Test Story: Shadows of Destiny",
+                    author: state.currentUser.username,
+                    authorId: state.currentUser.id,
+                    summary: "A test story to demonstrate the reading functionality.",
+                    category: "sunny",
+                    status: "ongoing",
+                    date: new Date().toISOString().split('T')[0],
+                    chapters: [
+                        {
+                            chapterNumber: 1,
+                            title: "The Beginning",
+                            content: "The nightmare gate shimmered with an eerie light, casting long shadows across the broken concrete. Sunny stood before it, his heart pounding like a war drum.\n\nHe could feel the oppressive weight of the Spell, the inevitable pull into another harrowing trial. But something was different this time.\n\nAs he reached out, a shadow detached itself from the wall—not his own, but something else. A whisper, faint yet clear, echoed in his mind: 'Choose differently, Lost from Light.'\n\nHe hesitated, his hand hovering inches from the pulsating surface. What if he didn't follow them? What if he took another path?"
+                        }
+                    ]
+                };
+                
+                state.fanfics.unshift(testFanfic);
+                saveToStorage();
+                renderFanfics('home');
+                alert('Test story added! You can now click on it to read.');
             });
         });
     </script>
