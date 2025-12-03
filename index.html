@@ -1174,7 +1174,11 @@
                     return;
                 }
             } else if (page === 'reader') {
+                // IMPORTANT FIX: Only show the reader page, hide everything else
                 document.getElementById('reader-page').classList.add('active');
+                
+                // Also hide the hero section if it's visible
+                document.getElementById('home-page').classList.remove('active');
             }
         }
 
@@ -1358,7 +1362,7 @@
             });
         }
 
-        // Open reader
+        // Open reader - FIXED VERSION
         function openReader(fanficId) {
             console.log('=== OPENING READER ===');
             console.log('Fanfic ID:', fanficId);
@@ -1398,18 +1402,20 @@
                 chapterSelect.appendChild(option);
             }
             
-            // Load first chapter automatically
-            loadChapter(1);
-            
-            // Navigate to reader
+            // Navigate to reader FIRST
             navigateTo('reader');
+            
+            // Then load first chapter (with a small delay to ensure DOM is ready)
+            setTimeout(() => {
+                loadChapter(1);
+            }, 50);
         }
 
-        // Load chapter - SIMPLIFIED AND FIXED
+        // Load chapter - FIXED VERSION
         function loadChapter(chapterNumber) {
             console.log('=== LOADING CHAPTER ===');
             console.log('Chapter number:', chapterNumber);
-            console.log('Current fanfic:', state.currentFanfic);
+            console.log('Current fanfic:', state.currentFanfic ? state.currentFanfic.title : 'none');
             
             if (!state.currentFanfic) {
                 console.error('No current fanfic selected');
@@ -1434,28 +1440,39 @@
             
             console.log('Chapter to load:', chapter);
             console.log('Chapter title:', chapter.title);
-            console.log('Chapter content:', chapter.content ? 'Content exists (' + chapter.content.length + ' chars)' : 'No content');
+            console.log('Chapter content length:', chapter.content ? chapter.content.length : 0);
             
             // Update UI
             chapterSelect.value = chapterNumber;
             
-            // SIMPLE DISPLAY - This should definitely work
+            // Create HTML content - SIMPLE AND RELIABLE
             let html = `<h3>${chapter.title || 'Untitled Chapter'}</h3>`;
             
             if (chapter.content && chapter.content.trim()) {
                 // Split by newlines and create paragraphs
-                const paragraphs = chapter.content.split('\n').filter(p => p.trim() !== '');
+                const contentLines = chapter.content.split('\n');
                 html += '<div class="chapter-text">';
-                paragraphs.forEach(paragraph => {
-                    html += `<p>${paragraph}</p>`;
-                });
+                
+                for (let i = 0; i < contentLines.length; i++) {
+                    const line = contentLines[i].trim();
+                    if (line) {
+                        html += `<p>${line}</p>`;
+                    }
+                }
+                
                 html += '</div>';
             } else {
-                html += '<p>No content available for this chapter.</p>';
+                html += '<div class="chapter-text"><p><i>No content available for this chapter.</i></p></div>';
             }
             
+            // Add navigation info at the bottom
+            html += `<div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); color: var(--text-secondary);">
+                        <p>Chapter ${chapterNumber} of ${state.currentFanfic.chapters.length} | ${state.currentFanfic.status === 'completed' ? 'Completed' : 'Ongoing'}</p>
+                    </div>`;
+            
+            // Set the content
             chapterContent.innerHTML = html;
-            console.log('Set chapter content HTML');
+            console.log('Chapter content set successfully');
             
             // Update button states
             prevChapter.disabled = chapterNumber === 1;
