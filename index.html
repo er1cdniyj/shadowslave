@@ -858,7 +858,7 @@
             </div>
             
             <div class="chapter-content" id="chapterContent">
-                <p>Select a chapter to start reading.</p>
+                <!-- Chapter content will be loaded here -->
             </div>
         </div>
         
@@ -1305,7 +1305,7 @@
                 chapterSelect.appendChild(option);
             });
             
-            // Load first chapter
+            // Load first chapter automatically
             loadChapter(1);
             
             // Navigate to reader
@@ -1323,7 +1323,17 @@
             
             // Update UI
             chapterSelect.value = chapterNumber;
-            chapterContent.innerHTML = `<h3>${chapter.title}</h3>` + chapter.content;
+            
+            // Format the content with paragraphs
+            let formattedContent = `<h3 style="margin-bottom: 30px; color: var(--accent-color);">${chapter.title}</h3>`;
+            
+            // Split content by newlines and wrap in paragraphs
+            const paragraphs = chapter.content.split('\n').filter(p => p.trim() !== '');
+            paragraphs.forEach(paragraph => {
+                formattedContent += `<p>${paragraph}</p>`;
+            });
+            
+            chapterContent.innerHTML = formattedContent;
             
             // Update button states
             prevChapter.disabled = chapterNumber === 1;
